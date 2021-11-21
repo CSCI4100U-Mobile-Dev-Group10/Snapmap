@@ -1,5 +1,3 @@
-import 'package:snapmap/models/post.dart';
-
 /// [User] class
 /// Should have two main ways to lookup a user:
 /// By [email] which returns the username of the [User] (for authentication)
