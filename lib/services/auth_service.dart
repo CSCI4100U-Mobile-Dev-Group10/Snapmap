@@ -7,43 +7,42 @@ Future<bool> authUser(Map data) async {
   Map<String, dynamic>? dict;
 
   try {
-    DocumentSnapshot<Map<String, dynamic>> snapshot =
+    DocumentSnapshot<Map<String, dynamic>> doc =
         await users.doc(data['username']).get();
-    dict = snapshot.data();
+    dict = doc.data();
   } on StateError {
     logger.e('No nested field exists!');
+    return false;
   } catch (e) {
     logger.e(e);
+    return false;
   }
+
   if (dict == null) return false;
   if (data['password'] != dict['password']) return false;
+
   return true;
 }
 
-Future<bool> _signUp(Map data) async {
-  bool returnValue = true;
-  await users.doc(data['username']).get().then((value) async {
+Future<bool> signUp(Map data) async {
+  try {
+    DocumentSnapshot<Map<String, dynamic>> userDoc =
+        await users.doc(data['username']).get();
+
+    QuerySnapshot<Map<String, dynamic>> emailDoc =
+        await users.where('email', isEqualTo: data['email']).get();
+
+    if (emailDoc.docs.isNotEmpty) return false;
+    if (userDoc.data() == null) return false;
+
     await users
-        .where('email', isEqualTo: data['email'])
-        .get()
-        .then((emailInstance) {
-      if (emailInstance.docs.isNotEmpty) {
-        returnValue = false;
-      } else {
-        if (value.data() != null) {
-          returnValue = false;
-        } else {
-          users
-              .doc(data['username'])
-              .set({'email': data['email'], 'password': data['password']}).then(
-                  (value) {
-            logger.i("Added User");
-          }).catchError((error) {
-            logger.e(error);
-          });
-        }
-      }
-    });
-  });
-  return returnValue;
+        .doc(data['username'])
+        .set({'email': data['email'], 'password': data['password']});
+
+    logger.i('Added User => ${data['username']}');
+  } catch (e) {
+    logger.e(e);
+    return false;
+  }
+  return true;
 }
