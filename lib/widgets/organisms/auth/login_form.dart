@@ -1,9 +1,7 @@
 // ignore_for_file: prefer_const_constructors, avoid_print, avoid_single_cascade_in_expression_statements, invalid_return_type_for_catch_error
 
 import 'package:flutter/material.dart';
-import 'package:flutter_login/flutter_login.dart';
-import 'package:flutter/scheduler.dart' show timeDilation;
-import 'package:snapmap/services/users.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:snapmap/widgets/organisms/auth/login_form.dart';
@@ -26,8 +24,6 @@ class _loginFormState extends State<loginForm> {
   String errorText = '';
   bool pageFlag = false;
   bool errorExists = false;
-
-  Duration get loginTime => Duration(milliseconds: timeDilation.ceil() * 2250);
 
   final users = FirebaseFirestore.instance.collection("Users");
 
@@ -58,17 +54,20 @@ class _loginFormState extends State<loginForm> {
   Future<bool> _signUp(Map data) async {
     bool returnValue = true;
     await users.doc(data['username']).get().then((value) async {
-      await users.where('email', isEqualTo: data['email']).get().then((emailInstance) {
+      await users
+          .where('email', isEqualTo: data['email'])
+          .get()
+          .then((emailInstance) {
         if (emailInstance.docs.isNotEmpty) {
           returnValue = false;
         } else {
           if (value.data() != null) {
             returnValue = false;
           } else {
-            users
-                .doc(data['username'])
-                .set({'email': data['email'], 'password': data['password']}).then(
-                    (value) {
+            users.doc(data['username']).set({
+              'email': data['email'],
+              'password': data['password']
+            }).then((value) {
               print("Added User");
             }).catchError((error) => print("Failed to add User: $error"));
           }
