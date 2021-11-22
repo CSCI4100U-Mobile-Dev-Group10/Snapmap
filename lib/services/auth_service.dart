@@ -1,29 +1,23 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:snapmap/utils/logger.dart';
 
 final users = FirebaseFirestore.instance.collection("Users");
 
-Future<bool> _authUser(Map data) async {
-  bool returnValue = true;
-  var dict;
+Future<bool> authUser(Map data) async {
+  Map<String, dynamic>? dict;
 
-  await users.doc(data['username']).get().then((DocumentSnapshot snapshot) {
-    try {
-      dict = snapshot.data() as Map;
-    } on StateError catch (e) {
-      print('No nested field exists!');
-    }
-
-    if (snapshot.data() != null) {
-      if (data['password'] != dict['password']) {
-        returnValue = false;
-      }
-    } else {
-      returnValue = false;
-    }
-  }).catchError((error) {
-    returnValue = false;
-  });
-  return returnValue;
+  try {
+    DocumentSnapshot<Map<String, dynamic>> snapshot =
+        await users.doc(data['username']).get();
+    dict = snapshot.data();
+  } on StateError {
+    logger.e('No nested field exists!');
+  } catch (e) {
+    logger.e(e);
+  }
+  if (dict == null) return false;
+  if (data['password'] != dict['password']) return false;
+  return true;
 }
 
 Future<bool> _signUp(Map data) async {
@@ -39,12 +33,14 @@ Future<bool> _signUp(Map data) async {
         if (value.data() != null) {
           returnValue = false;
         } else {
-          users.doc(data['username']).set({
-            'email': data['email'],
-            'password': data['password']
-          }).then((value) {
-            print("Added User");
-          }).catchError((error) => print("Failed to add User: $error"));
+          users
+              .doc(data['username'])
+              .set({'email': data['email'], 'password': data['password']}).then(
+                  (value) {
+            logger.i("Added User");
+          }).catchError((error) {
+            logger.e(error);
+          });
         }
       }
     });
