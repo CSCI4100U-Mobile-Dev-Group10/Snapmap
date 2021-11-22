@@ -23,6 +23,7 @@ class _loginFormState extends State<loginForm> {
   String errorText = '';
   bool pageFlag = false;
   bool errorExists = false;
+  bool redeyeOn = false;
 
   final users = FirebaseFirestore.instance.collection("Users");
 
@@ -50,25 +51,27 @@ class _loginFormState extends State<loginForm> {
     return returnValue;
   }
 
-  Future<bool> _signUp(Map data) async {
-    bool returnValue = true;
+  Future<String> _signUp(Map data) async {
+    String returnValue = 'true';
     await users.doc(data['username']).get().then((value) async {
       await users
           .where('email', isEqualTo: data['email'])
           .get()
           .then((emailInstance) {
         if (emailInstance.docs.isNotEmpty) {
-          returnValue = false;
+          returnValue = 'email';
         } else {
           if (value.data() != null) {
-            returnValue = false;
-          } else {
+            returnValue = 'username';
+          } else if (data['conPass'] == data['password']) {
             users.doc(data['username']).set({
               'email': data['email'],
               'password': data['password']
             }).then((value) {
               print("Added User");
             }).catchError((error) => print("Failed to add User: $error"));
+          } else {
+            returnValue = 'password';
           }
         }
       });
@@ -82,8 +85,15 @@ class _loginFormState extends State<loginForm> {
         key: _formKey,
         child: Column(
           children: [
+            SizedBox(
+              height: 50,
+            ),
             TextFormField(
-              decoration: InputDecoration(labelText: "Username"),
+              decoration: InputDecoration(
+                prefixIcon: Icon(Icons.account_circle),
+                labelText: "Username",
+                border: OutlineInputBorder(),
+              ),
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'This field needs input';
@@ -94,10 +104,17 @@ class _loginFormState extends State<loginForm> {
                 username = value.toString();
               },
             ),
+            SizedBox(
+              height: 10,
+            ),
             Visibility(
               visible: pageFlag,
               child: TextFormField(
-                decoration: InputDecoration(labelText: "Email"),
+                decoration: InputDecoration(
+                  prefixIcon: Icon(Icons.alternate_email),
+                  labelText: "Email",
+                  border: OutlineInputBorder(),
+                ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'This field needs input';
@@ -109,8 +126,27 @@ class _loginFormState extends State<loginForm> {
                 },
               ),
             ),
+            SizedBox(
+              height: 10,
+            ),
             TextFormField(
-              decoration: InputDecoration(labelText: "Password"),
+              obscureText: !redeyeOn,
+              enableSuggestions: false,
+              autocorrect: false,
+              decoration: InputDecoration(
+                labelText: "Password",
+                prefixIcon: Icon(Icons.lock),
+                border: OutlineInputBorder(),
+                suffixIcon: IconButton(
+                  onPressed: () {
+                    redeyeOn = !redeyeOn;
+                    setState(() {});
+                  },
+                  icon: redeyeOn
+                      ? Icon(Icons.remove_red_eye_outlined)
+                      : Icon(Icons.remove_red_eye),
+                ),
+              ),
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'This field needs input';
@@ -121,10 +157,20 @@ class _loginFormState extends State<loginForm> {
                 password = value.toString();
               },
             ),
+            SizedBox(
+              height: 10,
+            ),
             Visibility(
               visible: pageFlag,
               child: TextFormField(
-                decoration: InputDecoration(labelText: "Confirm Password"),
+                obscureText: !redeyeOn,
+                enableSuggestions: false,
+                autocorrect: false,
+                decoration: InputDecoration(
+                  labelText: "Confirm Password",
+                  prefixIcon: Icon(Icons.lock),
+                  border: OutlineInputBorder(),
+                ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'This field needs input';
@@ -139,7 +185,15 @@ class _loginFormState extends State<loginForm> {
             SizedBox(
               height: 10,
             ),
-            Visibility(visible: errorExists, child: Text(errorText)),
+            Visibility(
+                visible: errorExists,
+                child: Text(
+                  errorText,
+                  style: TextStyle(color: Colors.red),
+                )),
+            SizedBox(
+              height: 10,
+            ),
             Visibility(
               visible: !pageFlag,
               child: InkWell(
@@ -153,6 +207,11 @@ class _loginFormState extends State<loginForm> {
                           content: Text("Enter email to recover password:"),
                           actions: [
                             TextField(
+                              decoration: InputDecoration(
+                                label: Text('Email'),
+                                prefixIcon: Icon(Icons.email),
+                                border: OutlineInputBorder(),
+                              ),
                               controller: _accountRecovery,
                             ),
                             TextButton(
@@ -226,22 +285,25 @@ class _loginFormState extends State<loginForm> {
                         'username': username,
                         'email': email,
                         'password': password,
+                        'conPass': confirmPass,
                       });
-                      if (returnValue == false) {
+                      if (returnValue == 'username') {
                         errorExists = true;
-                        errorText = 'Username or Email already in use';
+                        errorText = 'Username already in use';
+                        setState(() {});
+                      } else if (returnValue == 'email') {
+                        errorExists = true;
+                        errorText = 'Email already in use';
+                        setState(() {});
+                      } else if (returnValue == 'password') {
+                        errorText =
+                            'Confirmation of password does not match entered password';
+                        errorExists = true;
                         setState(() {});
                       } else {
                         errorExists = false;
-                        if (password == confirmPass) {
-                          pageFlag = false;
-                          setState(() {});
-                        } else {
-                          errorText =
-                              'Confirmation of password does not match entered password!';
-                          errorExists = true;
-                          setState(() {});
-                        }
+                        pageFlag = false;
+                        setState(() {});
                       }
                     }
                   }
