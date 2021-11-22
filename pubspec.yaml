@@ -37,6 +37,8 @@ dependencies:
   flutter_login: ^3.0.0
   firebase_core: 
   cloud_firestore: 
+  flutter_email_sender: ^5.0.2
+  http: 
 
 dev_dependencies:
   flutter_test:
