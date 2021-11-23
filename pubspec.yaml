@@ -40,6 +40,7 @@ dependencies:
   flutter_email_sender: ^5.0.2
   http: 
   logger: ^1.1.0
+  image_picker: 
 
 dev_dependencies:
   flutter_test:

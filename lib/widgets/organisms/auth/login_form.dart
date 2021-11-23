@@ -4,15 +4,22 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:http/http.dart' as http;
+import 'package:snapmap/screens/profile_creation.dart';
+import 'package:snapmap/services/email_service.dart';
+import 'package:snapmap/services/auth_service.dart';
+import 'package:snapmap/globals.dart';
 
-class loginForm extends StatefulWidget {
-  loginForm({Key? key}) : super(key: key);
+
+// login form first page of the application
+
+class LoginForm extends StatefulWidget {
+  LoginForm({Key? key}) : super(key: key);
 
   @override
-  _loginFormState createState() => _loginFormState();
+  _LoginFormState createState() => _LoginFormState();
 }
 
-class _loginFormState extends State<loginForm> {
+class _LoginFormState extends State<LoginForm> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController _accountRecovery = TextEditingController();
 
@@ -26,58 +33,6 @@ class _loginFormState extends State<loginForm> {
   bool redeyeOn = false;
 
   final users = FirebaseFirestore.instance.collection("Users");
-
-  Future<bool> _authUser(Map data) async {
-    bool returnValue = true;
-    var dict;
-
-    await users.doc(data['username']).get().then((DocumentSnapshot snapshot) {
-      try {
-        dict = snapshot.data() as Map;
-      } on StateError catch (e) {
-        print('No nested field exists!');
-      }
-
-      if (snapshot.data() != null) {
-        if (data['password'] != dict['password']) {
-          returnValue = false;
-        }
-      } else {
-        returnValue = false;
-      }
-    }).catchError((error) {
-      returnValue = false;
-    });
-    return returnValue;
-  }
-
-  Future<String> _signUp(Map data) async {
-    String returnValue = 'true';
-    await users.doc(data['username']).get().then((value) async {
-      await users
-          .where('email', isEqualTo: data['email'])
-          .get()
-          .then((emailInstance) {
-        if (emailInstance.docs.isNotEmpty) {
-          returnValue = 'email';
-        } else {
-          if (value.data() != null) {
-            returnValue = 'username';
-          } else if (data['conPass'] == data['password']) {
-            users.doc(data['username']).set({
-              'email': data['email'],
-              'password': data['password']
-            }).then((value) {
-              print("Added User");
-            }).catchError((error) => print("Failed to add User: $error"));
-          } else {
-            returnValue = 'password';
-          }
-        }
-      });
-    });
-    return returnValue;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -116,10 +71,14 @@ class _loginFormState extends State<loginForm> {
                   border: OutlineInputBorder(),
                 ),
                 validator: (value) {
+                  // check to see if email for sign up is valid
                   if (value == null || value.isEmpty) {
                     return 'This field needs input';
+                  } else if (!emailValidator(value)) {
+                    return 'Enter valid email';
+                  } else {
+                    return null;
                   }
-                  return null;
                 },
                 onSaved: (value) {
                   email = value.toString();
@@ -224,7 +183,8 @@ class _loginFormState extends State<loginForm> {
                         );
                       }).then((value) async {
                     var emailAlert = value;
-
+                    // check to see if recovery email is in database
+                    // if true send recovery email to address
                     await users
                         .where('email', isEqualTo: emailAlert)
                         .get()
@@ -232,30 +192,14 @@ class _loginFormState extends State<loginForm> {
                       if (emailInstance.docs.isNotEmpty) {
                         var data = emailInstance.docs.first.data() as Map;
                         var id = emailInstance.docs.single.id;
-
-                        final url = Uri.parse(
-                            'https://api.emailjs.com/api/v1.0/email/send');
-                        final response = await http.post(url,
-                            headers: {
-                              'origin': 'http://localhost',
-                              'Content-Type': 'application/json',
-                            },
-                            body: json.encode({
-                              'service_id': 'service_smkqfxt',
-                              'template_id': 'template_v2wk9kt',
-                              'user_id': 'user_C3Qke9dPwz0OJgOyvnd4I',
-                              'template_params': {
-                                'username': id,
-                                'password': data['password'],
-                                'send_to': data['email'],
-                              },
-                            }));
-
-                        print(response.body);
+                        sendEmail(
+                            username: id,
+                            password: data['password'],
+                            email: data['email']);
                       } else {
                         print('user does not exist');
                       }
-                    });
+                    }).catchError((_) => print(_));
                   });
                 },
               ),
@@ -265,7 +209,8 @@ class _loginFormState extends State<loginForm> {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
                     if (!pageFlag) {
-                      var returnValue = await _authUser({
+                      // authorize user login
+                      var returnValue = await authUser({
                         'username': username,
                         'password': password,
                       });
@@ -278,15 +223,19 @@ class _loginFormState extends State<loginForm> {
                       } else {
                         errorExists = false;
                         setState(() {});
-                        Navigator.pushNamed(context, '/socialFeed');
+                        Navigator.pushNamed(context, '/controller');
                       }
                     } else {
-                      var returnValue = await _signUp({
+                      // add users sign up info to database
+                      var returnValue = await signUp({
                         'username': username,
                         'email': email,
                         'password': password,
                         'conPass': confirmPass,
                       });
+                      user.username = username;
+                      user.email = email;
+                      user.password = password;
                       if (returnValue == 'username') {
                         errorExists = true;
                         errorText = 'Username already in use';
@@ -304,6 +253,7 @@ class _loginFormState extends State<loginForm> {
                         errorExists = false;
                         pageFlag = false;
                         setState(() {});
+                        Navigator.pushNamed(context, '/profileCreation');
                       }
                     }
                   }
