@@ -39,6 +39,7 @@ dependencies:
   cloud_firestore: 
   flutter_email_sender: ^5.0.2
   http: 
+  image_picker: ^0.8.4+4
 
 dev_dependencies:
   flutter_test:

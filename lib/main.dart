@@ -1,9 +1,13 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:snapmap/screens/profile_creation.dart';
 import 'screens/auth_screen.dart';
 import 'screens/social_feed_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'screens/profile_screen.dart';
+import 'screens/camera_view_screen.dart';
+import 'package:snapmap/widgets/organisms/controller.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,10 +26,14 @@ class SnapMap extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: socialFeed(),
+      home: SocialFeed(),
       routes: {
-        '/authScreen': (context) => authentication(),
-        '/socialFeed': (context) => socialFeed(),
+        '/authScreen': (context) => Authentication(),
+        '/socialFeed': (context) => SocialFeed(),
+        '/profileScreen': (context) => Profile(),
+        '/cameraScreen': (context) => CameraView(),
+        '/controller': (context) => NavController(),
+        '/profileCreation': (context) => CreateProfile(),
       },
       initialRoute: '/authScreen',
     );

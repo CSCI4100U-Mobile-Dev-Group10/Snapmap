@@ -1,19 +1,16 @@
-// ignore_for_file: prefer_const_constructors, camel_case_types
-
 import 'package:flutter/material.dart';
+import 'profile_screen.dart';
 
-class socialFeed extends StatefulWidget {
-  const socialFeed({ Key? key }) : super(key: key);
+class SocialFeed extends StatefulWidget {
+  const SocialFeed({Key? key}) : super(key: key);
 
   @override
-  _socialFeedState createState() => _socialFeedState();
+  _SocialFeedState createState() => _SocialFeedState();
 }
 
-class _socialFeedState extends State<socialFeed> {
+class _SocialFeedState extends State<SocialFeed> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      
-    );
+    return Text('socialFeed');
   }
 }

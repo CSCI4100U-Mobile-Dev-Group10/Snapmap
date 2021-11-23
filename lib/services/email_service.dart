@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-Future _sendEmail({
+// this file handles email verification and forgoten password email recovery 
+
+Future sendEmail({
   required String username,
   required String password,
   required String email,
@@ -22,6 +24,9 @@ Future _sendEmail({
           'send_to': email,
         },
       }));
+}
 
-  print(response.body);
+bool emailValidator(String email) {
+  bool emailValid = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(email);
+  return emailValid;
 }
