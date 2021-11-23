@@ -4,28 +4,41 @@
 /// By [username] which is the primary way to retrieve a [User] (everything else)
 class User {
   /// Primary id for the user (unique)
-  final String username;
+  String username;
 
   /// The email address used to signup (unique)
-  final String email;
+  String email;
+
+  /// The password used in login
+  String password;
+
+  /// The display name used in application
+  String displayName;
+
+  /// The url to the profile picture
+  String profileURL;
 
   /// A list of [username] for every friend
-  final List<String> friends;
+  List<String> friends;
 
   /// A list of [username] for every other [User]
   /// that has requested to connect with this [User]
-  final List<String> receivedFriendRequests;
+  List<String> receivedFriendRequests;
 
   /// A list of [username] for every other [User]
   /// that this [User] has requested to connect with
-  final List<String> sentFriendRequests;
+  List<String> sentFriendRequests;
 
   /// A list of [Post.id] for posts that this user has created
-  final List<String> posts;
+  List<String> posts;
 
-  const User(
+  User(
     this.username,
-    this.email, {
+    this.email, 
+    this.password,
+    this.displayName,
+    this.profileURL,
+    {
     this.friends = const <String>[],
     this.posts = const <String>[],
     this.receivedFriendRequests = const <String>[],
