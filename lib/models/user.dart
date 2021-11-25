@@ -15,8 +15,8 @@ class User {
   /// The display name used in application
   String displayName;
 
-  /// The url to the profile picture
-  String profileURL;
+  /// The link of the profile picture
+  String profileUrl;
 
   /// A list of [username] for every friend
   List<String> friends;
@@ -37,7 +37,7 @@ class User {
     this.email,
     this.password,
     this.displayName,
-    this.profileURL, {
+    this.profileUrl, {
     this.friends = const <String>[],
     this.posts = const <String>[],
     this.receivedFriendRequests = const <String>[],
@@ -49,15 +49,12 @@ class User {
       username,
       data['email'],
       data['password'],
-      data['display_name']??'',
-      data['profileURL']??'',
-
-      // TODO setup friends and posts
-      friends: data['friends']??[] as List<String>,
-      posts: data['posts']??[] as List<String>,
-
-      receivedFriendRequests: data['friends']??[] as List<String>,
-      sentFriendRequests: data['friends']??[] as List<String>,
+      data['displayName'] ?? '',
+      data['profileUrl'] ?? '',
+      friends: (data['friends'] ?? []).cast<String>(),
+      posts: (data['posts'] ?? []).cast<String>(),
+      receivedFriendRequests: (data['friends'] ?? []).cast<String>(),
+      sentFriendRequests: (data['friends'] ?? []).cast<String>(),
     );
   }
 
@@ -66,8 +63,8 @@ class User {
       'username': username,
       'email': email,
       'password': password,
-      'display_name': displayName,
-      'profileURL': profileURL,
+      'displayName': displayName,
+      'profileUrl': profileUrl,
       'friends': friends,
       'posts': posts,
       'sentFriends': sentFriendRequests,
