@@ -5,34 +5,32 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:snapmap/globals.dart';
+import 'package:snapmap/utils/logger.dart';
+import 'package:snapmap/widgets/molecules/avatar_picker.dart';
 
-class CreateProfile extends StatefulWidget {
-  const CreateProfile({Key? key}) : super(key: key);
+class ProfileCreationScreen extends StatefulWidget {
+  static const String routeId = '/profile_creation';
+  const ProfileCreationScreen({Key? key}) : super(key: key);
 
   @override
-  _CreateProfileState createState() => _CreateProfileState();
+  _ProfileCreationScreenState createState() => _ProfileCreationScreenState();
 }
 
-class _CreateProfileState extends State<CreateProfile> {
+class _ProfileCreationScreenState extends State<ProfileCreationScreen> {
   late XFile selectedImage = XFile('');
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final users = FirebaseFirestore.instance.collection("Users");
   String displayName = '';
   bool flag = false;
 
-  // get image from image gallery
-  imgFromGallery() async {
-    XFile? image = await ImagePicker()
-        .pickImage(source: ImageSource.gallery, imageQuality: 50);
+  void avatarPickerCallback(XFile image) {
     setState(() {
-      if (image != null) {
-        selectedImage = image;
-      }
+      selectedImage = image;
     });
   }
+
   // check if display name is already in use for validator
   checkUserDN(String dn) async {
     var result =
@@ -50,41 +48,12 @@ class _CreateProfileState extends State<CreateProfile> {
       child: Scaffold(
         body: Column(
           children: [
-            GestureDetector(
-              onTap: () {
-                imgFromGallery();
-                setState(() {});
-              },
-              child: CircleAvatar(
-                radius: 55,
-                backgroundColor: Colors.blue,
-                child: selectedImage.path != ''
-                    ? ClipRRect(
-                        borderRadius: BorderRadius.circular(50),
-                        child: Image.file(
-                          File(selectedImage.path),
-                          width: 100,
-                          height: 100,
-                          fit: BoxFit.fitHeight,
-                        ),
-                      )
-                    : Container(
-                        decoration: BoxDecoration(
-                            color: Colors.grey[200],
-                            borderRadius: BorderRadius.circular(50)),
-                        width: 100,
-                        height: 100,
-                        child: Icon(
-                          Icons.camera_alt,
-                          color: Colors.grey[800],
-                        ),
-                      ),
-              ),
-            ),
+            AvatarPicker(user, callback: avatarPickerCallback),
             Form(
               key: _formKey,
               child: Column(
                 children: [
+                  /// Display Name Field
                   TextFormField(
                     decoration: InputDecoration(
                       labelText: 'Display Name',
@@ -103,7 +72,7 @@ class _CreateProfileState extends State<CreateProfile> {
                       if (value == null || value.isEmpty) {
                         return 'Must enter display name';
                       } else if (flag) {
-                        return 'Display Name already in use';
+                        return 'Display name already in use';
                       }
                       return null;
                     },
@@ -114,20 +83,20 @@ class _CreateProfileState extends State<CreateProfile> {
                 ],
               ),
             ),
+
+            /// Save Button
             TextButton(
               onPressed: () async {
                 if (_formKey.currentState!.validate()) {
                   _formKey.currentState!.save();
                   user.displayName = displayName;
                   user.profileURL = selectedImage.path;
-                  await users.doc(user.username).set({
-                    'email': user.email,
-                    'password': user.password,
-                    'display_name': displayName,
-                    'profileURL': selectedImage.path,
-                  }).then((value) async {
-                    print('Added Display Name');
-                  }).catchError((error) => print(''));
+                  await users
+                      .doc(user.username)
+                      .set(user.toJson())
+                      .then((value) async {
+                    logger.i('Added Display Name');
+                  }).catchError((e) => logger.e(e));
                   Navigator.pushNamed(context, '/controller');
                 }
               },

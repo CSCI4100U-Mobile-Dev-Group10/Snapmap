@@ -7,6 +7,7 @@ import 'package:snapmap/screens/social_feed_screen.dart';
 import 'package:snapmap/screens/camera_view_screen.dart';
 
 class NavController extends StatefulWidget {
+  static const String routeId = '/nav_controller';
   const NavController({Key? key}) : super(key: key);
 
   @override
@@ -15,7 +16,11 @@ class NavController extends StatefulWidget {
 
 class _NavControllerState extends State<NavController> {
   var selectedIndex = 0;
-  var pages = [const SocialFeed(), const CameraView(), const Profile()];
+  var pages = [
+    const SocialFeedScreen(),
+    const CameraViewScreen(),
+    const ProfileScreen()
+  ];
 
   void onTabTapped(int index) {
     setState(() {
