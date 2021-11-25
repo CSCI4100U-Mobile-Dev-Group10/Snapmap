@@ -44,13 +44,9 @@ class _AvatarPickerState extends State<AvatarPicker> {
           widget.user.profileURL = selectedImage.path;
         });
       },
-      child: CircleAvatar(
-        radius: 55,
-        backgroundColor: Colors.blue,
-        child: Avatar(
+      child:  Avatar(
           pickedImage ? widget.user.profileURL : selectedImage.path,
         ),
-      ),
     );
   }
 
