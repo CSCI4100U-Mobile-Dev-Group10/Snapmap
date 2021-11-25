@@ -6,9 +6,9 @@ import 'package:snapmap/utils/logger.dart';
 import 'package:snapmap/widgets/atoms/avatar.dart';
 
 class AvatarPicker extends StatefulWidget {
-  const AvatarPicker(this.user, {Key? key}) : super(key: key);
+  const AvatarPicker(this.user, {this.callback, Key? key}) : super(key: key);
   final User user;
-
+  final void Function(XFile)? callback;
   @override
   State<AvatarPicker> createState() => _AvatarPickerState();
 }
@@ -63,6 +63,9 @@ class _AvatarPickerState extends State<AvatarPicker> {
       setState(() {
         selectedImage = image;
       });
+      if (widget.callback != null) {
+        widget.callback!(image);
+      }
     }
   }
 }
