@@ -22,11 +22,12 @@ Future<bool> authUser(Map data) async {
 
   if (dict == null) return false;
   if (data['password'] != dict['password']) return false;
-  UserService.getInstance().setUser(User.fromMap(dict));
+  UserService.getInstance().setUser(User.fromMap(data['username'], dict));
   return true;
 }
 
 Future<bool> signUp(Map data) async {
+  late Map<String, dynamic> dict;
   try {
     DocumentSnapshot<Map<String, dynamic>> userDoc =
         await users.doc(data['username']).get();
@@ -36,6 +37,7 @@ Future<bool> signUp(Map data) async {
 
     if (emailDoc.docs.isNotEmpty) return false;
     if (userDoc.data() == null) return false;
+    dict = userDoc.data()!;
 
     await users
         .doc(data['username'])
@@ -46,5 +48,6 @@ Future<bool> signUp(Map data) async {
     logger.e(e);
     return false;
   }
+  UserService.getInstance().setUser(User.fromMap(data['username'], dict));
   return true;
 }
