@@ -1,12 +1,7 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'package:flutter/material.dart';
 import 'package:snapmap/screens/profile_creation_screen.dart';
 import 'screens/auth_screen.dart';
-import 'screens/social_feed_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'screens/profile_screen.dart';
-import 'screens/camera_view_screen.dart';
 import 'package:snapmap/widgets/organisms/nav_controller.dart';
 
 void main() async {
@@ -27,9 +22,9 @@ class SnapMap extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       routes: {
-        AuthScreen.routeId: (_) => AuthScreen(),
-        NavController.routeId: (_) => NavController(),
-        ProfileCreationScreen.routeId: (_) => ProfileCreationScreen(),
+        AuthScreen.routeId: (_) => const AuthScreen(),
+        NavController.routeId: (_) => const NavController(),
+        ProfileCreationScreen.routeId: (_) => const ProfileCreationScreen(),
         // Below are accessed through NavController
         // '/socialFeed': (_) => SocialFeedScreen(),
         // '/profileScreen': (_) => ProfileScreen(),
