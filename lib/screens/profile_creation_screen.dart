@@ -4,9 +4,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:snapmap/globals.dart';
+import 'package:snapmap/models/user.dart';
+import 'package:snapmap/services/user_service.dart';
 import 'package:snapmap/utils/logger.dart';
 import 'package:snapmap/widgets/molecules/avatar_picker.dart';
+import 'package:snapmap/widgets/organisms/nav_controller.dart';
 
 class ProfileCreationScreen extends StatefulWidget {
   static const String routeId = '/profile_creation';
@@ -20,6 +22,7 @@ class _ProfileCreationScreenState extends State<ProfileCreationScreen> {
   late XFile selectedImage = XFile('');
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final users = FirebaseFirestore.instance.collection("Users");
+  User user = UserService.getInstance().getUser()!;
   String displayName = '';
   bool flag = false;
 
@@ -98,7 +101,7 @@ class _ProfileCreationScreenState extends State<ProfileCreationScreen> {
                   }).catchError((e) {
                     logger.e(e);
                   });
-                  Navigator.pushNamed(context, '/controller');
+                  Navigator.pushNamed(context, NavController.routeId);
                 }
               },
               child: const Text('Submit'),

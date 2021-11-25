@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:snapmap/models/user.dart';
 
 class UserService {
@@ -5,6 +6,7 @@ class UserService {
   UserService._();
   static final UserService _singleton = UserService._();
   factory UserService.getInstance() => _singleton;
+  static final users = FirebaseFirestore.instance.collection("Users");
 
   /// Currently authenticated user
   User? _user;

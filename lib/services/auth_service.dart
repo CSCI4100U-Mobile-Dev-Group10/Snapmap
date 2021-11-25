@@ -26,8 +26,7 @@ Future<bool> authUser(Map data) async {
   return true;
 }
 
-Future<bool> signUp(Map data) async {
-  late Map<String, dynamic> dict;
+Future<String> signUp(Map<String, dynamic> data) async {
   try {
     DocumentSnapshot<Map<String, dynamic>> userDoc =
         await users.doc(data['username']).get();
@@ -35,9 +34,9 @@ Future<bool> signUp(Map data) async {
     QuerySnapshot<Map<String, dynamic>> emailDoc =
         await users.where('email', isEqualTo: data['email']).get();
 
-    if (emailDoc.docs.isNotEmpty) return false;
-    if (userDoc.data() == null) return false;
-    dict = userDoc.data()!;
+    if (emailDoc.docs.isNotEmpty) return 'email';
+    if (userDoc.data() != null) return 'username';
+    if (data['password'] != data['conPass']) return 'password';
 
     await users
         .doc(data['username'])
@@ -46,8 +45,9 @@ Future<bool> signUp(Map data) async {
     logger.i('Added User => ${data['username']}');
   } catch (e) {
     logger.e(e);
-    return false;
+    return 'error';
   }
-  UserService.getInstance().setUser(User.fromMap(data['username'], dict));
-  return true;
+  print(data);
+  UserService.getInstance().setUser(User.fromMap(data['username'], data));
+  return '';
 }

@@ -49,15 +49,15 @@ class User {
       username,
       data['email'],
       data['password'],
-      data['display_name'],
-      data['profileURL'],
+      data['display_name']??'',
+      data['profileURL']??'',
 
       // TODO setup friends and posts
-      // friends: data['friends'],
-      // posts: data['posts'],
+      friends: data['friends']??[] as List<String>,
+      posts: data['posts']??[] as List<String>,
 
-      // receivedFriendRequests: data['friends'],
-      // sentFriendRequests: data['friends'],
+      receivedFriendRequests: data['friends']??[] as List<String>,
+      sentFriendRequests: data['friends']??[] as List<String>,
     );
   }
 
