@@ -26,16 +26,21 @@ class SnapMap extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: SocialFeed(),
       routes: {
-        '/authScreen': (context) => Authentication(),
-        '/socialFeed': (context) => SocialFeed(),
-        '/profileScreen': (context) => Profile(),
-        '/cameraScreen': (context) => CameraView(),
-        '/controller': (context) => NavController(),
-        '/profileCreation': (context) => CreateProfile(),
+        '/authScreen': (_) => Authentication(),
+        '/socialFeed': (_) => SocialFeed(),
+        '/profileScreen': (_) => Profile(),
+        '/cameraScreen': (_) => CameraView(),
+        '/controller': (_) => NavController(),
+        '/profileCreation': (_) => CreateProfile(),
       },
       initialRoute: '/authScreen',
+      builder: (BuildContext context, Widget? child) {
+        return Container(
+          color: Colors.white,
+          child: SafeArea(child: child ?? Container()),
+        );
+      },
     );
   }
 }
