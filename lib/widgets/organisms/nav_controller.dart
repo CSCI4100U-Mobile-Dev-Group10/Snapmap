@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
-
 // This file controls the switch between social feed screen, camera view and profile screen
 // it dosent allow for back button to work with will pop scope
 
@@ -17,7 +15,7 @@ class NavController extends StatefulWidget {
 
 class _NavControllerState extends State<NavController> {
   var selectedIndex = 0;
-  var pages = [SocialFeed(), CameraView(), Profile()];
+  var pages = [const SocialFeed(), const CameraView(), const Profile()];
 
   void onTabTapped(int index) {
     setState(() {
@@ -42,13 +40,13 @@ class _NavControllerState extends State<NavController> {
           showUnselectedLabels: false,
           type: BottomNavigationBarType.shifting,
           iconSize: 30,
-          selectedIconTheme: IconThemeData(
+          selectedIconTheme: const IconThemeData(
             color: Colors.blue,
             size: 40,
           ),
           selectedItemColor: Colors.blue,
           unselectedItemColor: Colors.grey,
-          items: [
+          items: const [
             BottomNavigationBarItem(
               icon: Icon(Icons.photo_library),
               label: '',
