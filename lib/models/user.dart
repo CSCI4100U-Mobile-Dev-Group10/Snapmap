@@ -34,14 +34,44 @@ class User {
 
   User(
     this.username,
-    this.email, 
+    this.email,
     this.password,
     this.displayName,
-    this.profileURL,
-    {
+    this.profileURL, {
     this.friends = const <String>[],
     this.posts = const <String>[],
     this.receivedFriendRequests = const <String>[],
     this.sentFriendRequests = const <String>[],
   });
+
+  factory User.fromMap(String username, Map<String, dynamic> data) {
+    return User(
+      username,
+      data['email'],
+      data['password'],
+      data['display_name'],
+      data['profileURL'],
+
+      // TODO setup friends and posts
+      // friends: data['friends'],
+      // posts: data['posts'],
+
+      // receivedFriendRequests: data['friends'],
+      // sentFriendRequests: data['friends'],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'username': username,
+      'email': email,
+      'password': password,
+      'display_name': displayName,
+      'profileURL': profileURL,
+      'friends': friends,
+      'posts': posts,
+      'sentFriends': sentFriendRequests,
+      'receivedFriends': receivedFriendRequests,
+    };
+  }
 }

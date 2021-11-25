@@ -1,13 +1,8 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'package:flutter/material.dart';
-import 'package:snapmap/screens/profile_creation.dart';
+import 'package:snapmap/screens/profile_creation_screen.dart';
 import 'screens/auth_screen.dart';
-import 'screens/social_feed_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'screens/profile_screen.dart';
-import 'screens/camera_view_screen.dart';
-import 'package:snapmap/widgets/organisms/controller.dart';
+import 'package:snapmap/widgets/organisms/nav_controller.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,14 +22,15 @@ class SnapMap extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       routes: {
-        '/authScreen': (_) => Authentication(),
-        '/socialFeed': (_) => SocialFeed(),
-        '/profileScreen': (_) => Profile(),
-        '/cameraScreen': (_) => CameraView(),
-        '/controller': (_) => NavController(),
-        '/profileCreation': (_) => CreateProfile(),
+        AuthScreen.routeId: (_) => const AuthScreen(),
+        NavController.routeId: (_) => const NavController(),
+        ProfileCreationScreen.routeId: (_) => const ProfileCreationScreen(),
+        // Below are accessed through NavController
+        // '/socialFeed': (_) => SocialFeedScreen(),
+        // '/profileScreen': (_) => ProfileScreen(),
+        // '/cameraScreen': (_) => CameraViewScreen(),
       },
-      initialRoute: '/authScreen',
+      initialRoute: AuthScreen.routeId,
       builder: (BuildContext context, Widget? child) {
         return Container(
           color: Colors.white,
