@@ -1,9 +1,10 @@
 // this screen handles the extra info needed after sign up (the profile picture and display name)
 // this screen is pushed directly after sign up
 
+import 'dart:typed_data';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:snapmap/models/user.dart';
 import 'package:snapmap/services/user_service.dart';
 import 'package:snapmap/utils/logger.dart';
@@ -19,23 +20,31 @@ class ProfileCreationScreen extends StatefulWidget {
 }
 
 class _ProfileCreationScreenState extends State<ProfileCreationScreen> {
-  late XFile selectedImage = XFile('');
+  late String imageUrl;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final users = FirebaseFirestore.instance.collection("Users");
   User user = UserService.getInstance().getUser()!;
   String displayName = '';
   bool flag = false;
 
-  void avatarPickerCallback(XFile image) {
+  @override
+  void initState() {
+    super.initState();
     setState(() {
-      selectedImage = image;
+      imageUrl = user.profileUrl;
+    });
+  }
+
+  void avatarPickerCallback(String selectedImage) {
+    setState(() {
+      imageUrl = selectedImage;
     });
   }
 
   // check if display name is already in use for validator
   checkUserDN(String dn) async {
     var result =
-        await users.where('display_name', isEqualTo: dn.toString()).get();
+        await users.where('displayName', isEqualTo: dn.toString()).get();
     if (result.docs.isEmpty) {
       return false;
     }
@@ -57,6 +66,7 @@ class _ProfileCreationScreenState extends State<ProfileCreationScreen> {
               child: Column(
                 children: [
                   TextFormField(
+                    initialValue: user.displayName,
                     decoration: const InputDecoration(
                       labelText: 'Display Name',
                       border: OutlineInputBorder(),
@@ -92,7 +102,7 @@ class _ProfileCreationScreenState extends State<ProfileCreationScreen> {
                 if (_formKey.currentState!.validate()) {
                   _formKey.currentState!.save();
                   user.displayName = displayName;
-                  user.profileURL = selectedImage.path;
+                  user.profileUrl = imageUrl;
                   await users
                       .doc(user.username)
                       .set(user.toJson())
