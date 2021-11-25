@@ -47,11 +47,12 @@ class _ProfileCreationScreenState extends State<ProfileCreationScreen> {
         body: Column(
           children: [
             AvatarPicker(user, callback: avatarPickerCallback),
+
+            /// This form sets the display name field
             Form(
               key: _formKey,
               child: Column(
                 children: [
-                  /// Display Name Field
                   TextFormField(
                     decoration: const InputDecoration(
                       labelText: 'Display Name',
