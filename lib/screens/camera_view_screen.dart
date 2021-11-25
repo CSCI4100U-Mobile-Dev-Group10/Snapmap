@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class CameraView extends StatefulWidget {
-  const CameraView({Key? key}) : super(key: key);
+class CameraViewScreen extends StatefulWidget {
+  const CameraViewScreen({Key? key}) : super(key: key);
 
   @override
-  _CameraViewState createState() => _CameraViewState();
+  _CameraViewScreenState createState() => _CameraViewScreenState();
 }
 
-class _CameraViewState extends State<CameraView> {
+class _CameraViewScreenState extends State<CameraViewScreen> {
   @override
   Widget build(BuildContext context) {
     return const Text('cameraView');

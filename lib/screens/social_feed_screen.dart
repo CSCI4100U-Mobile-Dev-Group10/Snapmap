@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class SocialFeed extends StatefulWidget {
-  const SocialFeed({Key? key}) : super(key: key);
+class SocialFeedScreen extends StatefulWidget {
+  const SocialFeedScreen({Key? key}) : super(key: key);
 
   @override
-  _SocialFeedState createState() => _SocialFeedState();
+  _SocialFeedScreenState createState() => _SocialFeedScreenState();
 }
 
-class _SocialFeedState extends State<SocialFeed> {
+class _SocialFeedScreenState extends State<SocialFeedScreen> {
   @override
   Widget build(BuildContext context) {
     return const Text('socialFeed');
