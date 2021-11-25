@@ -44,17 +44,18 @@ class User {
     this.sentFriendRequests = const <String>[],
   });
 
-  factory User.fromMap(Map<String, dynamic> data) {
+  factory User.fromMap(String username, Map<String, dynamic> data) {
     return User(
-      data['username'],
+      username,
       data['email'],
       data['password'],
-      data['displayName'],
+      data['display_name'],
       data['profileURL'],
-      friends: data['friends'],
-      posts: data['posts'],
 
-      /// TODO setup friend requests
+      // TODO setup friends and posts
+      // friends: data['friends'],
+      // posts: data['posts'],
+
       // receivedFriendRequests: data['friends'],
       // sentFriendRequests: data['friends'],
     );
