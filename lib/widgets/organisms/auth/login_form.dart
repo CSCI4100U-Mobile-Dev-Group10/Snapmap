@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:snapmap/models/user.dart';
+import 'package:snapmap/screens/profile_creation_screen.dart';
 import 'package:snapmap/services/email_service.dart';
 import 'package:snapmap/services/auth_service.dart';
-import 'package:snapmap/globals.dart';
+import 'package:snapmap/services/user_service.dart';
 import 'package:snapmap/utils/logger.dart';
+import '../nav_controller.dart';
 
 // login form first page of the application
 
@@ -207,7 +210,7 @@ class _LoginFormState extends State<LoginForm> {
                   } else {
                     errorExists = false;
                     setState(() {});
-                    Navigator.pushNamed(context, '/controller');
+                    Navigator.pushNamed(context, NavController.routeId);
                   }
                 } else {
                   // add users sign up info to database
@@ -217,9 +220,6 @@ class _LoginFormState extends State<LoginForm> {
                     'password': password,
                     'conPass': confirmPass,
                   });
-                  user.username = username;
-                  user.email = email;
-                  user.password = password;
                   if (returnValue == 'username') {
                     errorExists = true;
                     errorText = 'Username already in use';
@@ -237,7 +237,7 @@ class _LoginFormState extends State<LoginForm> {
                     errorExists = false;
                     pageFlag = false;
                     setState(() {});
-                    Navigator.pushNamed(context, '/profileCreation');
+                    Navigator.pushNamed(context, ProfileCreationScreen.routeId);
                   }
                 }
               }
