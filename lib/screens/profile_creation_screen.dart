@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
-
 // this screen handles the extra info needed after sign up (the profile picture and display name)
 // this screen is pushed directly after sign up
 
@@ -55,7 +53,7 @@ class _ProfileCreationScreenState extends State<ProfileCreationScreen> {
                 children: [
                   /// Display Name Field
                   TextFormField(
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: 'Display Name',
                       border: OutlineInputBorder(),
                     ),
@@ -96,11 +94,13 @@ class _ProfileCreationScreenState extends State<ProfileCreationScreen> {
                       .set(user.toJson())
                       .then((value) async {
                     logger.i('Added Display Name');
-                  }).catchError((e) => logger.e(e));
+                  }).catchError((e) {
+                    logger.e(e);
+                  });
                   Navigator.pushNamed(context, '/controller');
                 }
               },
-              child: Text('Submit'),
+              child: const Text('Submit'),
             )
           ],
         ),
