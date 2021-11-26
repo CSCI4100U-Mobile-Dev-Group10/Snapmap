@@ -34,227 +34,302 @@ class _LoginFormState extends State<LoginForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: _formKey,
-      child: Column(
-        children: [
-          const SizedBox(height: 50),
-          TextFormField(
-            decoration: const InputDecoration(
-              prefixIcon: Icon(Icons.account_circle),
-              labelText: "Username",
-              border: OutlineInputBorder(),
-            ),
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'This field needs input';
-              }
-              return null;
-            },
-            onSaved: (value) {
-              username = value.toString();
-            },
-          ),
-          const SizedBox(height: 10),
-          Visibility(
-            visible: pageFlag,
-            child: TextFormField(
-              decoration: const InputDecoration(
-                prefixIcon: Icon(Icons.alternate_email),
-                labelText: "Email",
-                border: OutlineInputBorder(),
+    return ListView(
+      children: [
+        Form(
+          key: _formKey,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Stack(
+                alignment: Alignment.center,
+                children: [
+                  Opacity(
+                      opacity: 0.4,
+                      child: Image.asset('images/login_signup_picture.jpg')),
+                  pageFlag
+                      ? Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: const [
+                            Text('Welcome To Snapmap!',
+                                style: TextStyle(
+                                    fontSize: 30, fontWeight: FontWeight.bold)),
+                            SizedBox(height: 8),
+                            Text(
+                                'Enter your information below to start snapping!',
+                                style: TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black54))
+                          ],
+                        )
+                      : Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: const [
+                            Text('Welcome Back!',
+                                style: TextStyle(
+                                    fontSize: 35, fontWeight: FontWeight.bold)),
+                            SizedBox(height: 8),
+                            Text('Login below to see what you missed!',
+                                style: TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black54))
+                          ],
+                        ),
+                ],
               ),
-              validator: (value) {
-                // check to see if email for sign up is valid
-                if (value == null || value.isEmpty) {
-                  return 'This field needs input';
-                } else if (!emailValidator(value)) {
-                  return 'Enter valid email';
-                } else {
+              const SizedBox(height: 20),
+              TextFormField(
+                decoration: const InputDecoration(
+                  prefixIcon: Icon(Icons.account_circle),
+                  labelText: "Username",
+                  border: OutlineInputBorder(),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'This field needs input';
+                  }
                   return null;
-                }
-              },
-              onSaved: (value) {
-                email = value.toString();
-              },
-            ),
-          ),
-          const SizedBox(height: 10),
-          TextFormField(
-            obscureText: !redeyeOn,
-            enableSuggestions: false,
-            autocorrect: false,
-            decoration: InputDecoration(
-              labelText: "Password",
-              prefixIcon: const Icon(Icons.lock),
-              border: const OutlineInputBorder(),
-              suffixIcon: IconButton(
-                onPressed: () {
-                  redeyeOn = !redeyeOn;
-                  setState(() {});
                 },
-                icon: redeyeOn
-                    ? const Icon(Icons.remove_red_eye_outlined)
-                    : const Icon(Icons.remove_red_eye),
+                onSaved: (value) {
+                  username = value.toString();
+                },
               ),
-            ),
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'This field needs input';
-              }
-              return null;
-            },
-            onSaved: (value) {
-              password = value.toString();
-            },
-          ),
-          const SizedBox(height: 10),
-          Visibility(
-            visible: pageFlag,
-            child: TextFormField(
-              obscureText: !redeyeOn,
-              enableSuggestions: false,
-              autocorrect: false,
-              decoration: const InputDecoration(
-                labelText: "Confirm Password",
-                prefixIcon: Icon(Icons.lock),
-                border: OutlineInputBorder(),
-              ),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'This field needs input';
-                }
-                return null;
-              },
-              onSaved: (value) {
-                confirmPass = value.toString();
-              },
-            ),
-          ),
-          const SizedBox(height: 10),
-          Visibility(
-              visible: errorExists,
-              child: Text(
-                errorText,
-                style: const TextStyle(color: Colors.red),
-              )),
-          const SizedBox(height: 10),
-          Visibility(
-            visible: !pageFlag,
-            child: InkWell(
-              child: const Text("Forgot Password?"),
-              onTap: () {
-                showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        title: const Text("Account Recovery"),
-                        content: const Text("Enter email to recover password:"),
-                        actions: [
-                          TextField(
-                            decoration: const InputDecoration(
-                              label: Text('Email'),
-                              prefixIcon: Icon(Icons.email),
-                              border: OutlineInputBorder(),
-                            ),
-                            controller: _accountRecovery,
-                          ),
-                          TextButton(
-                            onPressed: () {
-                              return Navigator.pop(
-                                  context, _accountRecovery.text);
-                            },
-                            child: const Text("Send Email"),
-                          ),
-                        ],
-                      );
-                    }).then((value) async {
-                  var emailAlert = value;
-                  // check to see if recovery email is in database
-                  // if true send recovery email to address
-                  await users
-                      .where('email', isEqualTo: emailAlert)
-                      .get()
-                      .then((emailInstance) async {
-                    if (emailInstance.docs.isNotEmpty) {
-                      var data = emailInstance.docs.first.data();
-                      var id = emailInstance.docs.single.id;
-                      sendEmail(
-                          username: id,
-                          password: data['password'],
-                          email: data['email']);
+              const SizedBox(height: 10),
+              Visibility(
+                visible: pageFlag,
+                child: TextFormField(
+                  decoration: const InputDecoration(
+                    prefixIcon: Icon(Icons.alternate_email),
+                    labelText: "Email",
+                    border: OutlineInputBorder(),
+                  ),
+                  validator: (value) {
+                    // check to see if email for sign up is valid
+                    if (value == null || value.isEmpty) {
+                      return 'This field needs input';
+                    } else if (!emailValidator(value)) {
+                      return 'Enter valid email';
                     } else {
-                      logger.i('user does not exist');
+                      return null;
                     }
-                  }).catchError((e) => logger.e(e));
-                });
-              },
-            ),
-          ),
-          ElevatedButton(
-            onPressed: () async {
-              if (_formKey.currentState!.validate()) {
-                _formKey.currentState!.save();
-                if (!pageFlag) {
-                  // authorize user login
-                  var returnValue = await authUser({
-                    'username': username,
-                    'password': password,
-                  });
-                  if (returnValue == false) {
-                    // if the login fails (user does not exist) or entered wrong password
-                    errorText =
-                        'login attempt failed email or password is wrong';
-                    errorExists = true;
-                    setState(() {});
-                  } else {
-                    errorExists = false;
-                    setState(() {});
-                    Navigator.pushNamed(context, NavController.routeId);
+                  },
+                  onSaved: (value) {
+                    email = value.toString();
+                  },
+                ),
+              ),
+              const SizedBox(height: 10),
+              TextFormField(
+                obscureText: !redeyeOn,
+                enableSuggestions: false,
+                autocorrect: false,
+                decoration: InputDecoration(
+                  labelText: "Password",
+                  prefixIcon: const Icon(Icons.lock),
+                  border: const OutlineInputBorder(),
+                  suffixIcon: IconButton(
+                    onPressed: () {
+                      redeyeOn = !redeyeOn;
+                      setState(() {});
+                    },
+                    icon: redeyeOn
+                        ? const Icon(Icons.remove_red_eye_outlined)
+                        : const Icon(Icons.remove_red_eye),
+                  ),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'This field needs input';
                   }
-                } else {
-                  // add users sign up info to database
-                  var returnValue = await signUp({
-                    'username': username,
-                    'email': email,
-                    'password': password,
-                    'conPass': confirmPass,
-                  });
-                  if (returnValue == 'username') {
-                    errorExists = true;
-                    errorText = 'Username already in use';
-                    setState(() {});
-                  } else if (returnValue == 'email') {
-                    errorExists = true;
-                    errorText = 'Email already in use';
-                    setState(() {});
-                  } else if (returnValue == 'password') {
-                    errorText =
-                        'Confirmation of password does not match entered password';
-                    errorExists = true;
-                    setState(() {});
-                  } else {
-                    errorExists = false;
-                    pageFlag = false;
-                    setState(() {});
-                    Navigator.pushNamed(context, ProfileCreationScreen.routeId);
+                  return null;
+                },
+                onSaved: (value) {
+                  password = value.toString();
+                },
+              ),
+              const SizedBox(height: 10),
+              Visibility(
+                visible: pageFlag,
+                child: TextFormField(
+                  obscureText: !redeyeOn,
+                  enableSuggestions: false,
+                  autocorrect: false,
+                  decoration: const InputDecoration(
+                    labelText: "Confirm Password",
+                    prefixIcon: Icon(Icons.lock),
+                    border: OutlineInputBorder(),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'This field needs input';
+                    }
+                    return null;
+                  },
+                  onSaved: (value) {
+                    confirmPass = value.toString();
+                  },
+                ),
+              ),
+              const SizedBox(height: 10),
+              Visibility(
+                  visible: errorExists,
+                  child: Text(
+                    errorText,
+                    style: const TextStyle(color: Colors.red),
+                  )),
+              Visibility(
+                visible: !pageFlag,
+                child: InkWell(
+                  child: const Text("Forgot Password?"),
+                  onTap: () {
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: const Text("Account Recovery"),
+                            content:
+                                const Text("Enter email to recover password:"),
+                            actions: [
+                              TextField(
+                                decoration: const InputDecoration(
+                                  label: Text('Email'),
+                                  prefixIcon: Icon(Icons.email),
+                                  border: OutlineInputBorder(),
+                                ),
+                                controller: _accountRecovery,
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  return Navigator.pop(
+                                      context, _accountRecovery.text);
+                                },
+                                child: const Text("Send Email"),
+                              ),
+                            ],
+                          );
+                        }).then((value) async {
+                      var emailAlert = value;
+                      // check to see if recovery email is in database
+                      // if true send recovery email to address
+                      await users
+                          .where('email', isEqualTo: emailAlert)
+                          .get()
+                          .then((emailInstance) async {
+                        if (emailInstance.docs.isNotEmpty) {
+                          var data = emailInstance.docs.first.data();
+                          var id = emailInstance.docs.single.id;
+                          sendEmail(
+                              username: id,
+                              password: data['password'],
+                              email: data['email']);
+                        } else {
+                          logger.i('user does not exist');
+                        }
+                      }).catchError((e) => logger.e(e));
+                    });
+                  },
+                ),
+              ),
+              const SizedBox(height: 10),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.only(
+                        top: 15, bottom: 15, left: 70, right: 70),
+                    primary: const Color(0xFF7AB5B0)),
+                onPressed: () async {
+                  if (_formKey.currentState!.validate()) {
+                    _formKey.currentState!.save();
+                    if (!pageFlag) {
+                      // authorize user login
+                      var returnValue = await authUser({
+                        'username': username,
+                        'password': password,
+                      });
+                      if (returnValue == false) {
+                        // if the login fails (user does not exist) or entered wrong password
+                        errorText =
+                            'login attempt failed email or password is wrong';
+                        errorExists = true;
+                        setState(() {});
+                      } else {
+                        errorExists = false;
+                        setState(() {});
+                        Navigator.pushNamed(context, NavController.routeId);
+                      }
+                    } else {
+                      // add users sign up info to database
+                      var returnValue = await signUp({
+                        'username': username,
+                        'email': email,
+                        'password': password,
+                        'conPass': confirmPass,
+                      });
+                      if (returnValue == 'username') {
+                        errorExists = true;
+                        errorText = 'Username already in use';
+                        setState(() {});
+                      } else if (returnValue == 'email') {
+                        errorExists = true;
+                        errorText = 'Email already in use';
+                        setState(() {});
+                      } else if (returnValue == 'password') {
+                        errorText =
+                            'Confirmation of password does not match entered password';
+                        errorExists = true;
+                        setState(() {});
+                      } else {
+                        errorExists = false;
+                        pageFlag = false;
+                        setState(() {});
+                        Navigator.pushNamed(
+                            context, ProfileCreationScreen.routeId);
+                      }
+                    }
                   }
-                }
-              }
-            },
-            child: pageFlag ? const Text("Sign Up") : const Text("Login"),
+                },
+                child: pageFlag
+                    ? Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [Text("Sign Up"), Icon(Icons.person)],
+                      )
+                    : Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [Text("Login"), Icon(Icons.login)],
+                      ),
+              ),
+              const SizedBox(height: 12),
+              Stack(
+                alignment: Alignment.center,
+                children: [
+                  const Divider(thickness: 1, color: Color(0xFF7AB5B0)),
+                  Container(
+                    decoration: BoxDecoration(color: Colors.white),
+                    padding: EdgeInsets.all(2),
+                    child:
+                        Text('OR', style: TextStyle(color: Color(0xFF7AB5B0))),
+                  ),
+                ],
+              ),
+              TextButton(
+                onPressed: () {
+                  errorExists = false;
+                  setState(() {
+                    pageFlag = !pageFlag;
+                  });
+                },
+                child: pageFlag
+                    ? const Text("Login",
+                        style: TextStyle(color: Color(0xFF7AB5B0)))
+                    : const Text("Sign Up",
+                        style: TextStyle(color: Color(0xFF7AB5B0))),
+              )
+            ],
           ),
-          TextButton(
-            onPressed: () {
-              errorExists = false;
-              setState(() {
-                pageFlag = !pageFlag;
-              });
-            },
-            child: pageFlag ? const Text("Login") : const Text("Sign Up"),
-          )
-        ],
-      ),
+        )
+      ],
     );
   }
 }
