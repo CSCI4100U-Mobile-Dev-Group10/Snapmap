@@ -293,11 +293,11 @@ class _LoginFormState extends State<LoginForm> {
                 child: pageFlag
                     ? Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: [Text("Sign Up"), Icon(Icons.person)],
+                        children: const [Text("Sign Up"), Icon(Icons.person)],
                       )
                     : Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: [Text("Login"), Icon(Icons.login)],
+                        children: const [Text("Login"), Icon(Icons.login)],
                       ),
               ),
               const SizedBox(height: 12),
@@ -306,10 +306,10 @@ class _LoginFormState extends State<LoginForm> {
                 children: [
                   const Divider(thickness: 1, color: Color(0xFF7AB5B0)),
                   Container(
-                    decoration: BoxDecoration(color: Colors.white),
-                    padding: EdgeInsets.all(2),
-                    child:
-                        Text('OR', style: TextStyle(color: Color(0xFF7AB5B0))),
+                    decoration: const BoxDecoration(color: Colors.white),
+                    padding: const EdgeInsets.all(2),
+                    child: const Text('OR',
+                        style: TextStyle(color: Color(0xFF7AB5B0))),
                   ),
                 ],
               ),
