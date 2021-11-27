@@ -7,6 +7,7 @@ import 'package:snapmap/services/auth_service.dart';
 import 'package:snapmap/services/user_service.dart';
 import 'package:snapmap/utils/logger.dart';
 import '../nav_controller.dart';
+import '../../atoms/welcome_message.dart';
 
 // login form first page of the application
 
@@ -52,9 +53,7 @@ class _LoginFormState extends State<LoginForm> {
                       ? Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: const [
-                            Text('Welcome To Snapmap!',
-                                style: TextStyle(
-                                    fontSize: 30, fontWeight: FontWeight.bold)),
+                            WelcomeMessage(message: 'Welcome To Snapmap!'),
                             SizedBox(height: 8),
                             Text(
                                 'Enter your information below to start snapping!',
