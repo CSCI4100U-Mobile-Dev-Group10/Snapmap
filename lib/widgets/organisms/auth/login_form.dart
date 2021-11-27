@@ -7,7 +7,10 @@ import 'package:snapmap/services/auth_service.dart';
 import 'package:snapmap/services/user_service.dart';
 import 'package:snapmap/utils/logger.dart';
 import '../nav_controller.dart';
-import '../../atoms/welcome_message.dart';
+import '../../molecules/welcome_section.dart';
+import '../../molecules/login_page_button_info.dart';
+import '../../molecules/login_page_divider.dart';
+import '../../atoms/textbutton_text.dart';
 
 // login form first page of the application
 
@@ -41,7 +44,6 @@ class _LoginFormState extends State<LoginForm> {
           key: _formKey,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Stack(
                 alignment: Alignment.center,
@@ -50,33 +52,13 @@ class _LoginFormState extends State<LoginForm> {
                       opacity: 0.4,
                       child: Image.asset('images/login_signup_picture.jpg')),
                   pageFlag
-                      ? Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: const [
-                            WelcomeMessage(message: 'Welcome To Snapmap!'),
-                            SizedBox(height: 8),
-                            Text(
-                                'Enter your information below to start snapping!',
-                                style: TextStyle(
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black54))
-                          ],
-                        )
-                      : Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: const [
-                            Text('Welcome Back!',
-                                style: TextStyle(
-                                    fontSize: 35, fontWeight: FontWeight.bold)),
-                            SizedBox(height: 8),
-                            Text('Login below to see what you missed!',
-                                style: TextStyle(
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black54))
-                          ],
-                        ),
+                      ? const WelcomeSection(
+                          message: 'Welcome to Snapmap!',
+                          information:
+                              'Enter your information below to start snapping!')
+                      : const WelcomeSection(
+                          message: 'Welcome Back!',
+                          information: 'Login below to see what you missed!')
                 ],
               ),
               const SizedBox(height: 20),
@@ -234,84 +216,68 @@ class _LoginFormState extends State<LoginForm> {
               ),
               const SizedBox(height: 10),
               ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.only(
-                        top: 15, bottom: 15, left: 70, right: 70),
-                    primary: const Color(0xFF7AB5B0)),
-                onPressed: () async {
-                  if (_formKey.currentState!.validate()) {
-                    _formKey.currentState!.save();
-                    if (!pageFlag) {
-                      // authorize user login
-                      var returnValue = await authUser({
-                        'username': username,
-                        'password': password,
-                      });
-                      if (returnValue == false) {
-                        // if the login fails (user does not exist) or entered wrong password
-                        errorText =
-                            'login attempt failed email or password is wrong';
-                        errorExists = true;
-                        setState(() {});
+                  style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.only(
+                          top: 15, bottom: 15, left: 70, right: 70),
+                      primary: const Color(0xFF7AB5B0)),
+                  onPressed: () async {
+                    if (_formKey.currentState!.validate()) {
+                      _formKey.currentState!.save();
+                      if (!pageFlag) {
+                        // authorize user login
+                        var returnValue = await authUser({
+                          'username': username,
+                          'password': password,
+                        });
+                        if (returnValue == false) {
+                          // if the login fails (user does not exist) or entered wrong password
+                          errorText =
+                              'login attempt failed email or password is wrong';
+                          errorExists = true;
+                          setState(() {});
+                        } else {
+                          errorExists = false;
+                          setState(() {});
+                          Navigator.pushNamed(context, NavController.routeId);
+                        }
                       } else {
-                        errorExists = false;
-                        setState(() {});
-                        Navigator.pushNamed(context, NavController.routeId);
-                      }
-                    } else {
-                      // add users sign up info to database
-                      var returnValue = await signUp({
-                        'username': username,
-                        'email': email,
-                        'password': password,
-                        'conPass': confirmPass,
-                      });
-                      if (returnValue == 'username') {
-                        errorExists = true;
-                        errorText = 'Username already in use';
-                        setState(() {});
-                      } else if (returnValue == 'email') {
-                        errorExists = true;
-                        errorText = 'Email already in use';
-                        setState(() {});
-                      } else if (returnValue == 'password') {
-                        errorText =
-                            'Confirmation of password does not match entered password';
-                        errorExists = true;
-                        setState(() {});
-                      } else {
-                        errorExists = false;
-                        pageFlag = false;
-                        setState(() {});
-                        Navigator.pushNamed(
-                            context, ProfileCreationScreen.routeId);
+                        // add users sign up info to database
+                        var returnValue = await signUp({
+                          'username': username,
+                          'email': email,
+                          'password': password,
+                          'conPass': confirmPass,
+                        });
+                        if (returnValue == 'username') {
+                          errorExists = true;
+                          errorText = 'Username already in use';
+                          setState(() {});
+                        } else if (returnValue == 'email') {
+                          errorExists = true;
+                          errorText = 'Email already in use';
+                          setState(() {});
+                        } else if (returnValue == 'password') {
+                          errorText =
+                              'Confirmation of password does not match entered password';
+                          errorExists = true;
+                          setState(() {});
+                        } else {
+                          errorExists = false;
+                          pageFlag = false;
+                          setState(() {});
+                          Navigator.pushNamed(
+                              context, ProfileCreationScreen.routeId);
+                        }
                       }
                     }
-                  }
-                },
-                child: pageFlag
-                    ? Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [Text("Sign Up"), Icon(Icons.person)],
-                      )
-                    : Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [Text("Login"), Icon(Icons.login)],
-                      ),
-              ),
+                  },
+                  child: pageFlag
+                      ? const LoginPageButton(
+                          text: 'Sign Up', icon: Icon(Icons.person))
+                      : const LoginPageButton(
+                          text: 'Login', icon: Icon(Icons.login))),
               const SizedBox(height: 12),
-              Stack(
-                alignment: Alignment.center,
-                children: [
-                  const Divider(thickness: 1, color: Color(0xFF7AB5B0)),
-                  Container(
-                    decoration: const BoxDecoration(color: Colors.white),
-                    padding: const EdgeInsets.all(2),
-                    child: const Text('OR',
-                        style: TextStyle(color: Color(0xFF7AB5B0))),
-                  ),
-                ],
-              ),
+              const LoginDivider(),
               TextButton(
                 onPressed: () {
                   errorExists = false;
@@ -320,10 +286,8 @@ class _LoginFormState extends State<LoginForm> {
                   });
                 },
                 child: pageFlag
-                    ? const Text("Login",
-                        style: TextStyle(color: Color(0xFF7AB5B0)))
-                    : const Text("Sign Up",
-                        style: TextStyle(color: Color(0xFF7AB5B0))),
+                    ? const TextButtonText(text: 'Login')
+                    : const TextButtonText(text: 'Signup'),
               )
             ],
           ),
