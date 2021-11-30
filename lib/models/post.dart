@@ -6,15 +6,21 @@ class Post {
   /// The [username] of the [User] that created the post
   final String username;
 
-  // TODO
-  // * Image - Once image storage service has been determined
-  // * Geolocation - Once geolocation and map libraries have been determined
+  /// The link in firebase storage to the image
+  final String imageUrl;
+
+  /// The latitude and longitude are separated here for filtering purposes
+  final double latitude;
+  final double longitude;
 
   /// A list of [username] for each [User] who has liked the photo
   final List<String> likes;
 
   Post(
-    this.username, {
+    this.username,
+    this.imageUrl,
+    this.latitude,
+    this.longitude, {
     this.id,
     this.likes = const <String>[],
   });
