@@ -43,8 +43,8 @@ dependencies:
   image_picker: 
   firebase_storage: ^10.1.0
   flutter_map:
-  latlong:
-
+  latlong2: ^0.8.1
+  geolocator: ^8.0.0
 
 dev_dependencies:
   flutter_test:

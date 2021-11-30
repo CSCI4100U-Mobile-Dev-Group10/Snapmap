@@ -1,3 +1,5 @@
+import 'package:latlong2/latlong.dart';
+
 class Post {
   /// The [id] of the post from Firebase
   /// Should only be null when the post is initially created
@@ -6,16 +8,40 @@ class Post {
   /// The [username] of the [User] that created the post
   final String username;
 
-  // TODO
-  // * Image - Once image storage service has been determined
-  // * Geolocation - Once geolocation and map libraries have been determined
+  /// The link in firebase storage to the image
+  String imageUrl;
+
+  /// The location that the photo was taken
+  final LatLng latlong;
 
   /// A list of [username] for each [User] who has liked the photo
   final List<String> likes;
 
   Post(
-    this.username, {
+    this.username,
+    this.imageUrl,
+    this.latlong, {
     this.id,
     this.likes = const <String>[],
   });
+
+  factory Post.fromMap(String id, Map<String, dynamic> data) {
+    return Post(
+      data['username'],
+      data['imageUrl'],
+      data['latlong'],
+      id: id,
+      likes: data['likes'],
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'username': username,
+      'imageUrl': imageUrl,
+      'latlong': latlong,
+      'likes': likes,
+    };
+  }
 }
