@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/plugin_api.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:snapmap/services/geo_service.dart';
 
 class MapScreen extends StatefulWidget {
   const MapScreen({Key? key}) : super(key: key);
@@ -11,15 +13,29 @@ class MapScreen extends StatefulWidget {
 
 //This portion creates the map to show where this picture was taken
 class _MapScreenState extends State<MapScreen> {
-  //TODO: initialize post by location and by person
+  //TODO: get location of post(s)
+  LatLng? coords; // acquire coords of post
+
+  @override
+  void initState() {
+    _currLocation();
+    super.initState();
+  }
+
+  Future<void> _currLocation() async {
+    Position pos = await getCurrentLocation();
+    setState(() {
+      coords = LatLng(pos.latitude, pos.longitude);
+    });
+  }
 
   final dumbyData =
-      LatLng(43.9644879, -78.896896); //basic data to verify functionality
+      LatLng(43.92233, -78.9409); //basic data to verify functionality
 
   @override
   Widget build(BuildContext context) {
     return FlutterMap(
-      options: MapOptions(zoom: 16.0, center: dumbyData),
+      options: MapOptions(zoom: 15.0, center: dumbyData),
       layers: [
         TileLayerOptions(
             urlTemplate:
@@ -33,14 +49,22 @@ class _MapScreenState extends State<MapScreen> {
           Marker(
               point: dumbyData,
               builder: (context) {
-                return Container(
-                  child: Icon(
-                    Icons.location_on_rounded,
-                    color: Colors.blueAccent,
-                    size: 50,
-                  ),
+                return const Icon(
+                  Icons.attribution,
+                  color: Colors.redAccent,
+                  size: 40,
                 );
-              })
+              }),
+          if (coords != null)
+            Marker(
+                point: coords!,
+                builder: (context) {
+                  return const Icon(
+                    Icons.location_on_sharp,
+                    color: Colors.blueAccent,
+                    size: 40,
+                  );
+                })
         ])
       ],
     );
