@@ -105,7 +105,7 @@ class _ProfileCreationScreenState extends State<ProfileCreationScreen> {
                   user.profileUrl = imageUrl;
                   await users
                       .doc(user.username)
-                      .set(user.toJson())
+                      .set(user.toMap())
                       .then((value) async {
                     logger.i('Added Display Name');
                   }).catchError((e) {
