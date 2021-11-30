@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:snapmap/screens/profile_screen.dart';
 import 'package:snapmap/screens/social_feed_screen.dart';
 import 'package:snapmap/screens/camera_view_screen.dart';
+import 'package:snapmap/screens/map_screen.dart';
 
 class NavController extends StatefulWidget {
   static const String routeId = '/nav_controller';
@@ -19,7 +20,8 @@ class _NavControllerState extends State<NavController> {
   var pages = [
     const SocialFeedScreen(),
     const CameraViewScreen(),
-    const ProfileScreen()
+    const ProfileScreen(),
+    const MapScreen()
   ];
 
   void onTabTapped(int index) {
@@ -63,7 +65,12 @@ class _NavControllerState extends State<NavController> {
             BottomNavigationBarItem(
               icon: Icon(Icons.person),
               label: '',
-            )
+            ),
+            //test Section to verfy map is working
+            BottomNavigationBarItem(
+              icon: Icon(Icons.map),
+              label: '',
+            ),
           ],
         ),
       ),
