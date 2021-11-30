@@ -45,12 +45,16 @@ class _LoginFormState extends State<LoginForm> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
+              // create stack of image / appropriate text depending on
+              // if user is on login form or signup form
               Stack(
                 alignment: Alignment.center,
                 children: [
                   Opacity(
-                      opacity: 0.4,
-                      child: Image.asset('images/login_signup_picture.jpg')),
+                      opacity: 0.5,
+                      child:
+                          Image.asset('images/login_signup_form_picture.jpg')),
+                  // change text depending on signup / login
                   pageFlag
                       ? const WelcomeSection(
                           message: 'Welcome to Snapmap!',
@@ -216,10 +220,11 @@ class _LoginFormState extends State<LoginForm> {
               ),
               const SizedBox(height: 10),
               ElevatedButton(
+                  // set colour of button to match image in title stack
                   style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.only(
                           top: 15, bottom: 15, left: 70, right: 70),
-                      primary: const Color(0xFF7AB5B0)),
+                      primary: Colors.blue),
                   onPressed: () async {
                     if (_formKey.currentState!.validate()) {
                       _formKey.currentState!.save();
@@ -271,6 +276,8 @@ class _LoginFormState extends State<LoginForm> {
                       }
                     }
                   },
+                  // set the button to have different text / icon depending
+                  // on the screen
                   child: pageFlag
                       ? const LoginPageButton(
                           text: 'Sign Up', icon: Icon(Icons.person))
@@ -285,6 +292,7 @@ class _LoginFormState extends State<LoginForm> {
                     pageFlag = !pageFlag;
                   });
                 },
+                // set text to have different text depending on the screen
                 child: pageFlag
                     ? const TextButtonText(text: 'Login')
                     : const TextButtonText(text: 'Signup'),
