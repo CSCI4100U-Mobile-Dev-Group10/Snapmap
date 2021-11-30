@@ -4,8 +4,6 @@ import 'package:latlong2/latlong.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 
-//Started this portion need to finish social feed first
-
 class MapScreen extends StatefulWidget {
   const MapScreen({Key? key}) : super(key: key);
 
@@ -13,9 +11,13 @@ class MapScreen extends StatefulWidget {
   _MapScreenState createState() => _MapScreenState();
 }
 
+//This portion creates the map to show where this picture was taken
 class _MapScreenState extends State<MapScreen> {
-  final dumbyData = LatLng(43.9644879, -78.896896);
-  //var center = LatLng(currentLocation , _longitude)
+  //TODO: initialize post by location and by person
+
+  final dumbyData =
+      LatLng(43.9644879, -78.896896); //basic data to verify functionality
+
   @override
   Widget build(BuildContext context) {
     return FlutterMap(
