@@ -78,19 +78,21 @@ class PostService {
         .toList();
   }
 
+  /// The uploadPost function can throw a [PermissionException]
+  /// if the location permissions are blocked
   Future<bool> uploadPost(Uint8List image) async {
+    // Get the current user
+    User? user = UserService.getInstance().getUser();
+    if (user == null) return false;
+
+    // Get latlong for the post
+    Position position = await getCurrentLocation();
+    LatLng latlong = LatLng(position.latitude, position.longitude);
+
+    // Create the initial post
+    Post post = Post(user.username, '', latlong);
+
     try {
-      // Get the current user
-      User? user = UserService.getInstance().getUser();
-      if (user == null) return false;
-
-      // Get latlong for the post
-      Position position = await getCurrentLocation();
-      LatLng latlong = LatLng(position.latitude, position.longitude);
-
-      // Create the initial post
-      Post post = Post(user.username, '', latlong);
-
       // Store the post to generate the id for the imageUrl
       DocumentReference<Map<String, dynamic>> ref =
           await _posts.add(post.toMap());
