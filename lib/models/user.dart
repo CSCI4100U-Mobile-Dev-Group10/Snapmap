@@ -1,7 +1,3 @@
-/// [User] class
-/// Should have two main ways to lookup a user:
-/// By [email] which returns the username of the [User] (for authentication)
-/// By [username] which is the primary way to retrieve a [User] (everything else)
 class User {
   /// Primary id for the user (unique)
   String username;
@@ -58,7 +54,7 @@ class User {
     );
   }
 
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic> toMap() {
     return {
       'username': username,
       'email': email,
