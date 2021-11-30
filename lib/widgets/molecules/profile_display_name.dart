@@ -12,9 +12,9 @@ class DisplayNameWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text(username,
+        Text(displayName,
             style: const TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),
-        Text('@$displayName',
+        Text('@$username',
             style: const TextStyle(fontSize: 20, color: Colors.black38)),
       ],
     );
