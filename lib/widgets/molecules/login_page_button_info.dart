@@ -13,7 +13,7 @@ class LoginPageButton extends StatelessWidget {
     // create a row for text + icon displayed in button
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
-      children: [Text(text), icon],
+      children: [Text(text), const SizedBox(width: 10), icon],
     );
   }
 }

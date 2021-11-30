@@ -8,7 +8,6 @@ class TextButtonText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // set button to match colour of image in title
-    return Text(text, style: TextStyle(color: Color(0xFF7AB5B0)));
+    return Text(text, style: const TextStyle(color: Colors.blue));
   }
 }

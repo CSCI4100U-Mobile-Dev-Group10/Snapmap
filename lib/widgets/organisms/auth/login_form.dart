@@ -51,8 +51,9 @@ class _LoginFormState extends State<LoginForm> {
                 alignment: Alignment.center,
                 children: [
                   Opacity(
-                      opacity: 0.4,
-                      child: Image.asset('images/login_signup_picture.jpg')),
+                      opacity: 0.5,
+                      child:
+                          Image.asset('images/login_signup_form_picture.jpg')),
                   // change text depending on signup / login
                   pageFlag
                       ? const WelcomeSection(
@@ -223,7 +224,7 @@ class _LoginFormState extends State<LoginForm> {
                   style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.only(
                           top: 15, bottom: 15, left: 70, right: 70),
-                      primary: const Color(0xFF7AB5B0)),
+                      primary: Colors.blue),
                   onPressed: () async {
                     if (_formKey.currentState!.validate()) {
                       _formKey.currentState!.save();
