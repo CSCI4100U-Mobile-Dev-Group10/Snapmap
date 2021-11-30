@@ -42,6 +42,9 @@ dependencies:
   logger: ^1.1.0
   image_picker: 
   firebase_storage: ^10.1.0
+  flutter_map:
+  latlong:
+
 
 dev_dependencies:
   flutter_test:
