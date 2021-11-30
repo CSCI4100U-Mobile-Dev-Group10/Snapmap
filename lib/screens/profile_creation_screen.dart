@@ -1,8 +1,6 @@
 // this screen handles the extra info needed after sign up (the profile picture and display name)
 // this screen is pushed directly after sign up
 
-import 'dart:typed_data';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:snapmap/models/user.dart';
