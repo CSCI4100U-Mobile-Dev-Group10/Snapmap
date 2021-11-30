@@ -45,6 +45,7 @@ dependencies:
   flutter_map:
   latlong2: ^0.8.1
   geolocator: ^8.0.0
+  qrscan: ^0.3.2
 
 dev_dependencies:
   flutter_test:
