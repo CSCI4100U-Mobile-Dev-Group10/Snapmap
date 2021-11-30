@@ -22,11 +22,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: [
-        ProfileHeader(user),
-        FriendCode(user),
-        FriendsList(user)
-      ],
+      children: [ProfileHeader(user), FriendCode(user), FriendsList(user)],
     );
   }
 }
