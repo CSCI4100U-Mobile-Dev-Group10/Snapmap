@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:latlong2/latlong.dart';
 
 class Post {
@@ -10,13 +9,10 @@ class Post {
   final String username;
 
   /// The link in firebase storage to the image
-  final String imageUrl;
+  String imageUrl;
 
   /// The location that the photo was taken
   final LatLng latlong;
-
-  /// The time that the post was taken
-  final Timestamp timestamp;
 
   /// A list of [username] for each [User] who has liked the photo
   final List<String> likes;
@@ -26,9 +22,8 @@ class Post {
     this.imageUrl,
     this.latlong, {
     this.id,
-    Timestamp? timestamp,
     this.likes = const <String>[],
-  }) : timestamp = timestamp ?? Timestamp.now();
+  });
 
   factory Post.fromMap(String id, Map<String, dynamic> data) {
     return Post(
@@ -37,7 +32,6 @@ class Post {
       data['latlong'],
       id: id,
       likes: data['likes'],
-      timestamp: data['timestamp'],
     );
   }
 
@@ -48,7 +42,6 @@ class Post {
       'imageUrl': imageUrl,
       'latlong': latlong,
       'likes': likes,
-      'timestamp': timestamp,
     };
   }
 }
