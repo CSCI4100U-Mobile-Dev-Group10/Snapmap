@@ -27,13 +27,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ProfileHeader(user),
         // create TabView to alternate between your QR code and your friend list
         DefaultTabController(
-            length: 2,
+            length: 3,
             child: Column(
               children: [
                 const TabBar(
                   tabs: [
-                    ProfileTabs(text: 'Friends List', icon: Icons.people),
-                    ProfileTabs(text: 'Your Snapmap Code', icon: Icons.qr_code)
+                    ProfileTabs(icon: Icons.people),
+                    ProfileTabs(icon: Icons.qr_code),
+                    ProfileTabs(icon: Icons.person_add_alt_1)
                   ],
                 ),
                 SizedBox(
@@ -41,6 +42,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     child: TabBarView(children: [
                       FriendsList(user),
                       FriendCode(user),
+                      const Center(child: Text('Friend Requests Go Here'))
                     ])),
               ],
             ))
