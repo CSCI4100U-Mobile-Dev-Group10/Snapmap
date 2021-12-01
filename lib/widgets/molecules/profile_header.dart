@@ -7,9 +7,10 @@ import 'package:snapmap/widgets/atoms/avatar.dart';
 import 'profile_display_name.dart';
 
 class ProfileHeader extends StatefulWidget {
-  const ProfileHeader(this.user, {Key? key}) : super(key: key);
+  const ProfileHeader(this.user, {this.showEdit = false, Key? key})
+      : super(key: key);
   final User user;
-
+  final bool showEdit;
   @override
   State<ProfileHeader> createState() => _ProfileHeaderState();
 }
@@ -29,22 +30,23 @@ class _ProfileHeaderState extends State<ProfileHeader> {
           DisplayNameWidget(
               username: widget.user.username,
               displayName: widget.user.displayName),
-          IconButton(
-            onPressed: () async {
-              widget.user.displayName = '';
-              await users
-                  .doc(widget.user.username)
-                  .set(widget.user.toMap())
-                  .then((value) async {
-                logger.i('Added Display Name');
-              }).catchError((e) {
-                logger.e(e);
-              });
-              Navigator.of(context).pushNamed(ProfileCreationScreen.routeId);
-            },
-            icon: const Icon(Icons.edit),
-            iconSize: 30,
-          )
+          if (widget.showEdit)
+            IconButton(
+              onPressed: () async {
+                widget.user.displayName = '';
+                await users
+                    .doc(widget.user.username)
+                    .set(widget.user.toMap())
+                    .then((value) async {
+                  logger.i('Added Display Name');
+                }).catchError((e) {
+                  logger.e(e);
+                });
+                Navigator.of(context).pushNamed(ProfileCreationScreen.routeId);
+              },
+              icon: const Icon(Icons.edit),
+              iconSize: 30,
+            )
         ],
       ),
     );

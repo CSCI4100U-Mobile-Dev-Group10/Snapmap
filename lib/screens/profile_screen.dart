@@ -13,7 +13,7 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  User user = UserService.getInstance().getUser()!;
+  User user = UserService.getInstance().getCurrrentUser()!;
 
   @override
   void initState() {

@@ -30,7 +30,7 @@ class UserService {
     }
   }
 
-  User? getUser() => _user;
+  User? getCurrrentUser() => _user;
 
   // *
   // * REFRESH USER OPERATIONS - keep the user in sync
@@ -66,6 +66,23 @@ class UserService {
   // *
   // * FRIEND OPERATIONS
   // *
+
+  Future<User?> getOtherUser(String otherUsername) async {
+    try {
+      // get the user's ref
+      DocumentReference<Map<String, dynamic>> otherUser = doc(otherUsername);
+
+      // get the user's data
+      Map<String, dynamic>? otherData = await data(otherUser);
+
+      // verify that user exists
+      if (otherData == null) return null;
+
+      return User.fromMap(otherUsername, otherData);
+    } catch (_) {
+      return null;
+    }
+  }
 
   /// request a friend as the authenticated user
   /// the result is whether the operation was successful

@@ -21,7 +21,7 @@ class _ProfileCreationScreenState extends State<ProfileCreationScreen> {
   late String imageUrl;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final users = FirebaseFirestore.instance.collection("Users");
-  User user = UserService.getInstance().getUser()!;
+  User user = UserService.getInstance().getCurrrentUser()!;
   String displayName = '';
   bool flag = false;
 
