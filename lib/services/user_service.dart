@@ -159,7 +159,7 @@ class UserService {
       // verify that both users exist
       if (currentData == null || otherData == null) return false;
 
-      // add the users to the respective side of the friend request
+      // remove the friends from both users
       (currentData['friends'] as List<String>)
           .removeWhere((element) => element == otherUsername);
       (otherData['friends'] as List<String>)
