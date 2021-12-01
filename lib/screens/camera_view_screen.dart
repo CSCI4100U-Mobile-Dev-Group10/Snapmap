@@ -1,15 +1,37 @@
-import 'package:flutter/material.dart';
+import 'dart:typed_data';
 
-class CameraViewScreen extends StatefulWidget {
+import 'package:flutter/material.dart';
+import 'package:snapmap/services/post_service.dart';
+import 'package:snapmap/widgets/organisms/camera_view.dart';
+import 'package:snapmap/widgets/organisms/friend_request_dialog.dart';
+import 'package:snapmap/widgets/organisms/post_confirmation_dialog.dart';
+
+class CameraViewScreen extends StatelessWidget {
   const CameraViewScreen({Key? key}) : super(key: key);
 
   @override
-  _CameraViewScreenState createState() => _CameraViewScreenState();
-}
-
-class _CameraViewScreenState extends State<CameraViewScreen> {
-  @override
   Widget build(BuildContext context) {
-    return const Text('cameraView');
+    void pictureCallback(Uint8List bytes) {
+      // TODO show the createPost Dialog
+      showDialog(
+        context: context,
+        builder: (_) => PostConfirmationDialog(bytes),
+      );
+    }
+
+    void addFriendCallback(String username) {
+      // TODO show the addFriendDialog
+      showDialog(
+        context: context,
+        builder: (_) => FriendRequestDialog(username),
+      );
+    }
+
+    return Scaffold(
+      body: CameraView(
+        pictureCallback,
+        addFriendCallback: addFriendCallback,
+      ),
+    );
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:snapmap/screens/profile_creation_screen.dart';
+import 'package:snapmap/services/camera_service.dart';
 import 'screens/auth_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:snapmap/widgets/organisms/nav_controller.dart';
@@ -7,6 +8,7 @@ import 'package:snapmap/widgets/organisms/nav_controller.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  await CameraService.getInstance().loadCameras();
   runApp(const SnapMap());
 }
 

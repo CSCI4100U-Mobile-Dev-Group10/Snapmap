@@ -46,6 +46,7 @@ dependencies:
   latlong2: ^0.8.1
   geolocator: ^8.0.0
   qrscan: ^0.3.2
+  camera: ^0.9.4+5
 
 dev_dependencies:
   flutter_test:

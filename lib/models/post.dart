@@ -29,7 +29,7 @@ class Post {
     return Post(
       data['username'],
       data['imageUrl'],
-      data['latlong'],
+      LatLng(data['lat'], data['long']),
       id: id,
       likes: data['likes'],
     );
@@ -40,7 +40,8 @@ class Post {
       'id': id,
       'username': username,
       'imageUrl': imageUrl,
-      'latlong': latlong,
+      'lat': latlong.latitude,
+      'long': latlong.longitude,
       'likes': likes,
     };
   }
