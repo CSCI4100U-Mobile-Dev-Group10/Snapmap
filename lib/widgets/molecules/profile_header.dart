@@ -7,7 +7,7 @@ import 'package:snapmap/widgets/atoms/avatar.dart';
 import 'profile_display_name.dart';
 
 class ProfileHeader extends StatefulWidget {
-  const ProfileHeader(this.user, {this.showEdit = false, Key? key})
+  const ProfileHeader(this.user, {this.showEdit = true, Key? key})
       : super(key: key);
   final User user;
   final bool showEdit;
@@ -32,16 +32,7 @@ class _ProfileHeaderState extends State<ProfileHeader> {
               displayName: widget.user.displayName),
           if (widget.showEdit)
             IconButton(
-              onPressed: () async {
-                widget.user.displayName = '';
-                await users
-                    .doc(widget.user.username)
-                    .set(widget.user.toMap())
-                    .then((value) async {
-                  logger.i('Added Display Name');
-                }).catchError((e) {
-                  logger.e(e);
-                });
+              onPressed: () {
                 Navigator.of(context).pushNamed(ProfileCreationScreen.routeId);
               },
               icon: const Icon(Icons.edit),

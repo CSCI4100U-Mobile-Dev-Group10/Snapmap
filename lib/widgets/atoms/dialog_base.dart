@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:snapmap/widgets/atoms/loading.dart';
 
 class DialogBase extends StatefulWidget {
   const DialogBase({
@@ -21,12 +22,8 @@ class _DialogBaseState extends State<DialogBase> {
 
   @override
   Widget build(BuildContext context) {
-    if (isAccepted) {
-      return const Dialog(
-        backgroundColor: Colors.transparent,
-        child: Center(child: CircularProgressIndicator()),
-      );
-    }
+    if (isAccepted) return const Loading();
+
     return AlertDialog(
       title: widget.title,
       content: widget.content,
