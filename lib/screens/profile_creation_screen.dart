@@ -1,11 +1,15 @@
 // this screen handles the extra info needed after sign up (the profile picture and display name)
 // this screen is pushed directly after sign up
 
+import 'dart:typed_data';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:snapmap/models/user.dart';
+import 'package:snapmap/services/photo_service.dart';
 import 'package:snapmap/services/user_service.dart';
 import 'package:snapmap/utils/logger.dart';
+import 'package:snapmap/widgets/atoms/loading.dart';
 import 'package:snapmap/widgets/molecules/avatar_picker.dart';
 import 'package:snapmap/widgets/organisms/nav_controller.dart';
 
@@ -18,11 +22,12 @@ class ProfileCreationScreen extends StatefulWidget {
 }
 
 class _ProfileCreationScreenState extends State<ProfileCreationScreen> {
-  late String imageUrl;
+  String imageUrl = '';
+  String displayName = '';
+  Uint8List? selectedImageBytes;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final users = FirebaseFirestore.instance.collection("Users");
-  User user = UserService.getInstance().getCurrrentUser()!;
-  String displayName = '';
+  User user = UserService.getInstance().getCurrentUser()!;
   bool flag = false;
 
   @override
@@ -30,12 +35,13 @@ class _ProfileCreationScreenState extends State<ProfileCreationScreen> {
     super.initState();
     setState(() {
       imageUrl = user.profileUrl;
+      displayName = user.displayName;
     });
   }
 
-  void avatarPickerCallback(String selectedImage) {
+  void avatarPickerCallback(Uint8List imageBytes) {
     setState(() {
-      imageUrl = selectedImage;
+      selectedImageBytes = imageBytes;
     });
   }
 
@@ -86,7 +92,7 @@ class _ProfileCreationScreenState extends State<ProfileCreationScreen> {
                   child: Column(
                     children: [
                       TextFormField(
-                        initialValue: user.displayName,
+                        initialValue: displayName,
                         decoration: const InputDecoration(
                           labelText: 'Display Name',
                           border: OutlineInputBorder(),
@@ -119,9 +125,16 @@ class _ProfileCreationScreenState extends State<ProfileCreationScreen> {
                 ElevatedButton(
                   onPressed: () async {
                     if (_formKey.currentState!.validate()) {
+                      showDialog(
+                          context: context, builder: (_) => const Loading());
                       _formKey.currentState!.save();
+                      if (selectedImageBytes != null) {
+                        imageUrl = await uploadProfileImage(
+                            user.username, selectedImageBytes!);
+                        user.profileUrl = imageUrl;
+                      }
                       user.displayName = displayName;
-                      user.profileUrl = imageUrl;
+                      UserService.getInstance().setUser(user);
                       await users
                           .doc(user.username)
                           .set(user.toMap())

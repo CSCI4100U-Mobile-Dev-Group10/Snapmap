@@ -30,7 +30,7 @@ class UserService {
     }
   }
 
-  User? getCurrrentUser() => _user;
+  User? getCurrentUser() => _user;
 
   // *
   // * REFRESH USER OPERATIONS - keep the user in sync

@@ -29,7 +29,7 @@ class PostService {
   }
 
   Future<List<Post>> getPostsForCurrentUser() async {
-    User? user = UserService.getInstance().getCurrrentUser();
+    User? user = UserService.getInstance().getCurrentUser();
     if (user == null) return [];
 
     List<QueryDocumentSnapshot<Map<String, dynamic>>> results = (await _posts
@@ -82,7 +82,7 @@ class PostService {
   /// if the location permissions are blocked
   Future<bool> uploadPost(Uint8List image) async {
     // Get the current user
-    User? user = UserService.getInstance().getCurrrentUser();
+    User? user = UserService.getInstance().getCurrentUser();
     if (user == null) return false;
 
     // Get latlong for the post
@@ -116,7 +116,7 @@ class PostService {
   Future<bool> handleLikePost(String id, bool liked) async {
     try {
       // Get the current user
-      User? user = UserService.getInstance().getCurrrentUser();
+      User? user = UserService.getInstance().getCurrentUser();
       if (user == null) return false;
 
       /// Get the ref to the post

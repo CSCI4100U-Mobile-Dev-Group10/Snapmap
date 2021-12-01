@@ -4,12 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:snapmap/models/user.dart';
 import 'package:snapmap/widgets/atoms/avatar.dart';
-import 'package:snapmap/services/photo_service.dart' as photo_service;
 
 class AvatarPicker extends StatefulWidget {
   const AvatarPicker(this.user, {this.callback, Key? key}) : super(key: key);
   final User user;
-  final void Function(String)? callback;
+  final void Function(Uint8List)? callback;
   @override
   State<AvatarPicker> createState() => _AvatarPickerState();
 }
@@ -38,10 +37,8 @@ class _AvatarPickerState extends State<AvatarPicker> {
     setState(() {
       selectedImageBytes = image;
     });
-    String imageUrl =
-        await photo_service.uploadProfileImage(user.username, image);
     if (widget.callback != null) {
-      widget.callback!(imageUrl);
+      widget.callback!(image);
     }
   }
 }

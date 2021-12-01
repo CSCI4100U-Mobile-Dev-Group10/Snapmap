@@ -5,7 +5,7 @@ const String _prepend = 'snapmap://';
 
 /// This is the string generated for qr code for this user
 String? generateQRCode() {
-  User? user = UserService.getInstance().getCurrrentUser();
+  User? user = UserService.getInstance().getCurrentUser();
   if (user == null) return null;
   return '${_prepend}add/${user.username}';
 }
