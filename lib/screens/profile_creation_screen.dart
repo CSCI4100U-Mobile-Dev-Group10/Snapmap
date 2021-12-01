@@ -54,69 +54,98 @@ class _ProfileCreationScreenState extends State<ProfileCreationScreen> {
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
-        body: Column(
-          children: [
-            AvatarPicker(user, callback: avatarPickerCallback),
-
-            /// This form sets the display name field
-            Form(
-              key: _formKey,
-              child: Column(
-                children: [
-                  TextFormField(
-                    initialValue: user.displayName,
-                    decoration: const InputDecoration(
-                      labelText: 'Display Name',
-                      border: OutlineInputBorder(),
-                    ),
-                    onChanged: (text) async {
-                      checkUserDN(text).then((value1) {
-                        if (value1) {
-                          flag = true;
-                        } else {
-                          flag = false;
-                        }
-                      });
-                    },
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Must enter display name';
-                      } else if (flag) {
-                        return 'Display name already in use';
-                      }
-                      return null;
-                    },
-                    onSaved: (value) {
-                      displayName = value.toString();
-                    },
-                  ),
-                ],
-              ),
+          // app bar to make it look nicer
+          appBar: AppBar(
+            // no back button
+            automaticallyImplyLeading: false,
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                // cancel button that returns back to user screen
+                TextButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: const Text('Cancel',
+                        style: TextStyle(color: Colors.white, fontSize: 14))),
+                const Text('Your Profile'),
+                const SizedBox(width: 3),
+                const Icon(Icons.edit, size: 25),
+              ],
             ),
+          ),
+          body: Container(
+            height: 300,
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                AvatarPicker(user, callback: avatarPickerCallback),
 
-            /// Save Button
-            TextButton(
-              onPressed: () async {
-                if (_formKey.currentState!.validate()) {
-                  _formKey.currentState!.save();
-                  user.displayName = displayName;
-                  user.profileUrl = imageUrl;
-                  await users
-                      .doc(user.username)
-                      .set(user.toMap())
-                      .then((value) async {
-                    logger.i('Added Display Name');
-                  }).catchError((e) {
-                    logger.e(e);
-                  });
-                  Navigator.pushNamed(context, NavController.routeId);
-                }
-              },
-              child: const Text('Submit'),
-            )
-          ],
-        ),
-      ),
+                /// This form sets the display name field
+                Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      TextFormField(
+                        initialValue: user.displayName,
+                        decoration: const InputDecoration(
+                          labelText: 'Display Name',
+                          border: OutlineInputBorder(),
+                        ),
+                        onChanged: (text) async {
+                          checkUserDN(text).then((value1) {
+                            if (value1) {
+                              flag = true;
+                            } else {
+                              flag = false;
+                            }
+                          });
+                        },
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Must enter display name';
+                          } else if (flag) {
+                            return 'Display name already in use';
+                          }
+                          return null;
+                        },
+                        onSaved: (value) {
+                          displayName = value.toString();
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+
+                ElevatedButton(
+                  onPressed: () async {
+                    if (_formKey.currentState!.validate()) {
+                      _formKey.currentState!.save();
+                      user.displayName = displayName;
+                      user.profileUrl = imageUrl;
+                      await users
+                          .doc(user.username)
+                          .set(user.toMap())
+                          .then((value) async {
+                        logger.i('Added Display Name');
+                      }).catchError((e) {
+                        logger.e(e);
+                      });
+                      Navigator.pushNamed(context, NavController.routeId);
+                    }
+                  },
+                  // make button full width and add icon
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Text('Save Profile Changes'),
+                      SizedBox(width: 10),
+                      Icon(Icons.check)
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          )),
     );
   }
 }
