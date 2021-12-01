@@ -2,49 +2,20 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:snapmap/services/post_service.dart';
+import 'package:snapmap/widgets/atoms/dialog_base.dart';
 
-class PostConfirmationDialog extends StatefulWidget {
+class PostConfirmationDialog extends StatelessWidget {
   const PostConfirmationDialog(this.bytes, {Key? key}) : super(key: key);
   final Uint8List bytes;
 
   @override
-  State<PostConfirmationDialog> createState() => _PostConfirmationDialogState();
-}
-
-class _PostConfirmationDialogState extends State<PostConfirmationDialog> {
-  bool isAccepted = false;
-
-  @override
   Widget build(BuildContext context) {
-    if (isAccepted) {
-      return const Dialog(
-        backgroundColor: Colors.transparent,
-        child: Center(child: CircularProgressIndicator()),
-      );
-    }
-    return AlertDialog(
+    return DialogBase(
       title: const Text('Are you sure you want to post this?'),
-      content: Image.memory(widget.bytes),
-      actions: [
-        IconButton(
-          icon: const Icon(Icons.cancel_rounded, color: Colors.redAccent),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-        IconButton(
-          icon: const Icon(Icons.check, color: Colors.green),
-          onPressed: () async {
-            if (!isAccepted) {
-              setState(() {
-                isAccepted = true;
-              });
-              await PostService.getInstance().uploadPost(widget.bytes);
-              Navigator.pop(context);
-            }
-          },
-        ),
-      ],
+      content: Image.memory(bytes),
+      callback: () async {
+        await PostService.getInstance().uploadPost(bytes);
+      },
     );
   }
 }
