@@ -4,6 +4,7 @@ import 'package:latlong2/latlong.dart';
 import 'package:snapmap/services/geo_service.dart';
 
 class MapScreen extends StatefulWidget {
+  static const String routeId = '/map';
   const MapScreen({Key? key}) : super(key: key);
 
   @override

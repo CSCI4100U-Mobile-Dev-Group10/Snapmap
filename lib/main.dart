@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:snapmap/screens/map_screen.dart';
 import 'package:snapmap/screens/profile_creation_screen.dart';
 import 'package:snapmap/services/camera_service.dart';
 import 'screens/auth_screen.dart';
@@ -27,6 +28,8 @@ class SnapMap extends StatelessWidget {
         AuthScreen.routeId: (_) => const AuthScreen(),
         NavController.routeId: (_) => const NavController(),
         ProfileCreationScreen.routeId: (_) => const ProfileCreationScreen(),
+        MapScreen.routeId: (_) => const MapScreen(),
+
         // Below are accessed through NavController
         // '/socialFeed': (_) => SocialFeedScreen(),
         // '/profileScreen': (_) => ProfileScreen(),

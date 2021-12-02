@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:latlong2/latlong.dart';
 import 'package:snapmap/models/user.dart';
 import 'package:snapmap/services/geo_service.dart';
 import 'package:snapmap/services/post_service.dart';
@@ -27,7 +26,9 @@ class _SocialFeedScreenState extends State<SocialFeedScreen> {
     super.initState();
     feeds['Friends'] = posts.getFriendPostsForUser(user);
     getCurrentLocation().then((latlng) async {
-      //feeds['Nearby'] = posts.getPostsByLocation(latlng);
+      setState(() {
+        feeds['Nearby'] = posts.getPostsByLocation(latlng);
+      });
     }).catchError((_) {
       logger.w('Unable to get current location, cannot show posts nearby');
     });
