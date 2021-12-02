@@ -17,15 +17,17 @@ class PostService {
   factory PostService.getInstance() => _singleton;
   static final _posts = FirebaseFirestore.instance.collection("Posts");
 
-  Future<List<Post>> getFriendPostsForUser(User user) async {
-    List<QueryDocumentSnapshot<Map<String, dynamic>>> results = (await _posts
-            .where('username', arrayContainsAny: user.friends)
-            .where('imageUrl', isNotEqualTo: '')
-            .get())
-        .docs;
-    return results
+  Stream<List<Post>> getFriendPostsForUser(User user) {
+    // if (user.friends.isEmpty) {
+    //   return Stream.empty();
+    // }
+    Stream<QuerySnapshot<Map<String, dynamic>>> results = _posts
+        .where('username', arrayContains: user.friends)
+        .where('imageUrl', isNotEqualTo: '')
+        .snapshots();
+    return results.map((list) => list.docs
         .map((result) => Post.fromMap(result.id, result.data()))
-        .toList();
+        .toList());
   }
 
   Future<List<Post>> getPostsForCurrentUser() async {
