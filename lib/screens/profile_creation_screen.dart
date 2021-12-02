@@ -14,11 +14,8 @@ import 'package:snapmap/widgets/molecules/avatar_picker.dart';
 import 'package:snapmap/widgets/organisms/nav_controller.dart';
 
 class ProfileCreationScreen extends StatefulWidget {
-  static const String edit = '/profile_creation';
-  static const String signup = '/profile_creation';
-  ProfileCreationScreen({Key? key, required this.signUp}) : super(key: key);
-
-  bool signUp;
+  static const String routeId = '/profile_creation';
+  const ProfileCreationScreen({Key? key}) : super(key: key);
 
   @override
   _ProfileCreationScreenState createState() => _ProfileCreationScreenState();
@@ -71,13 +68,10 @@ class _ProfileCreationScreenState extends State<ProfileCreationScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 // cancel button that returns back to user screen
-                Visibility(
-                  visible: !widget.signUp,
-                  child: TextButton(
-                      onPressed: () => Navigator.pop(context),
-                      child: const Text('Cancel',
-                          style: TextStyle(color: Colors.white, fontSize: 14))),
-                ),
+                TextButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: const Text('Cancel',
+                        style: TextStyle(color: Colors.white, fontSize: 14))),
                 const Text('Your Profile'),
                 const SizedBox(width: 3),
                 const Icon(Icons.edit, size: 25),

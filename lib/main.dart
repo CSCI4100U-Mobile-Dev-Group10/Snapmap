@@ -28,12 +28,7 @@ class SnapMap extends StatelessWidget {
       routes: {
         AuthScreen.routeId: (_) => const AuthScreen(),
         NavController.routeId: (_) => const NavController(),
-        ProfileCreationScreen.edit: (_) => ProfileCreationScreen(
-              signUp: false,
-            ),
-        ProfileCreationScreen.signup: (_) => ProfileCreationScreen(
-              signUp: true,
-            ),
+        ProfileCreationScreen.routeId: (_) => const ProfileCreationScreen(),
         MapScreen.routeId: (_) => const MapScreen(),
 
         // Below are accessed through NavController
