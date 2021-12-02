@@ -19,41 +19,35 @@ class PostService {
   static final _posts = FirebaseFirestore.instance.collection("Posts");
 
   Stream<QuerySnapshot<Map<String, dynamic>>> getFriendPostsForUser(User user) {
-    List<Object?> filterArray = (user.friends.isNotEmpty) ? user.friends : [''];
-    print('-------- POST --------');
-    print('filterArray => $filterArray');
+    List<String> filterArray = (user.friends.isNotEmpty) ? user.friends : [''];
     Stream<QuerySnapshot<Map<String, dynamic>>> results = _posts
-        //.where('username', arrayContainsAny: filterArray)
-//.where('imageUrl', isNotEqualTo: '')
+        .where('username', whereIn: filterArray)
+        .where('imageUrl', isNotEqualTo: '')
         .snapshots();
-    results.listen((event) {
-      print('---------- event ------');
-      print(event.docs.map((e) => e.id).toList());
-    });
     return results;
   }
 
-  Future<List<Post>> getPostsForCurrentUser() async {
+  Stream<QuerySnapshot<Map<String, dynamic>>> getPostsForCurrentUser() {
     User? user = UserService.getInstance().getCurrentUser();
-    if (user == null) return [];
 
-    List<QueryDocumentSnapshot<Map<String, dynamic>>> results = (await _posts
-            .where('username', isEqualTo: user.username)
-            .where('imageUrl', isNotEqualTo: '')
-            .get())
-        .docs;
+    /// This will be thrown when:
+    /// the user attempts to query the database before they've authenticated
+    if (user == null) NullThrownError();
 
-    return results
-        .map((result) => Post.fromMap(result.id, result.data()))
-        .toList();
+    Stream<QuerySnapshot<Map<String, dynamic>>> results = _posts
+        .where('username', isEqualTo: user!.username)
+        .where('imageUrl', isNotEqualTo: '')
+        .snapshots();
+
+    return results;
   }
 
-  Future<List<Post>> getPostsByLocation(
+  Stream<QuerySnapshot<Map<String, dynamic>>> getPostsByLocation(
     LatLng latLng, {
 
     /// Distance in kilometers
     double distance = 10,
-  }) async {
+  }) {
     double lat = latLng.latitude;
     double long = latLng.longitude;
 
@@ -63,29 +57,25 @@ class PostService {
     /// Searches a square area with
     /// latitude: lat +/- latRange
     /// longitude: long +/- longRange
-    List<QueryDocumentSnapshot<Map<String, dynamic>>> results = (await _posts
-            .where(
-              'latitude',
-              isLessThanOrEqualTo: lat + latRange,
-              isGreaterThanOrEqualTo: lat - latRange,
-            )
-            .where(
-              'longitude',
-              isLessThanOrEqualTo: long + longRange,
-              isGreaterThanOrEqualTo: long - longRange,
-            )
-            .where(
-              'username',
-              isNotEqualTo:
-                  UserService.getInstance().getCurrentUser()!.username,
-            )
-            .where('imageUrl', isNotEqualTo: '')
-            .get())
-        .docs;
+    Stream<QuerySnapshot<Map<String, dynamic>>> results = _posts
+        .where(
+          'latitude',
+          isLessThanOrEqualTo: lat + latRange,
+          isGreaterThanOrEqualTo: lat - latRange,
+        )
+        .where(
+          'longitude',
+          isLessThanOrEqualTo: long + longRange,
+          isGreaterThanOrEqualTo: long - longRange,
+        )
+        .where(
+          'username',
+          isNotEqualTo: UserService.getInstance().getCurrentUser()!.username,
+        )
+        .where('imageUrl', isNotEqualTo: '')
+        .snapshots();
 
-    return results
-        .map((result) => Post.fromMap(result.id, result.data()))
-        .toList();
+    return results;
   }
 
   /// The uploadPost function can throw a [PermissionException]
@@ -96,8 +86,7 @@ class PostService {
     if (user == null) return false;
 
     // Get latlong for the post
-    Position position = await getCurrentLocation();
-    LatLng latlong = LatLng(position.latitude, position.longitude);
+    LatLng latlong = await getCurrentLocation();
 
     // Create the initial post
     Post post = Post(user.username, '', latlong);

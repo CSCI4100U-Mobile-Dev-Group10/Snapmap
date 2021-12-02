@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/plugin_api.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:snapmap/services/geo_service.dart';
 
@@ -13,7 +12,6 @@ class MapScreen extends StatefulWidget {
 
 //This portion creates the map to show where this picture was taken
 class _MapScreenState extends State<MapScreen> {
-  //TODO: get location of post(s)
   LatLng? coords; // acquire coords of post
 
   @override
@@ -23,40 +21,43 @@ class _MapScreenState extends State<MapScreen> {
   }
 
   Future<void> _currLocation() async {
-    Position pos = await getCurrentLocation();
+    LatLng latlng = await getCurrentLocation();
     setState(() {
-      coords = LatLng(pos.latitude, pos.longitude);
+      coords = latlng;
     });
   }
 
-  final dumbyData =
-      LatLng(43.92233, -78.9409); //basic data to verify functionality
-
   @override
   Widget build(BuildContext context) {
+    LatLng? postLocation =
+        ModalRoute.of(context)!.settings.arguments as LatLng?;
     return FlutterMap(
-      options: MapOptions(zoom: 15.0, center: dumbyData),
+      options: MapOptions(zoom: 15.0, center: postLocation ?? coords),
       layers: [
         TileLayerOptions(
-            urlTemplate:
-                "https://api.mapbox.com/styles/v1/aforbes918/ckwmdijqt153q14nl8d25co18/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiYWZvcmJlczkxOCIsImEiOiJja3djemlxYjcwNWd1MnhwaTJ3a252YjR1In0.Bg4yEPvnwU1VJsdZmS2dFA",
-            additionalOptions: {
-              'accessToken':
-                  'pk.eyJ1IjoiYWZvcmJlczkxOCIsImEiOiJja3djemlxYjcwNWd1MnhwaTJ3a252YjR1In0.Bg4yEPvnwU1VJsdZmS2dFA',
-              'id': 'mapbox.mapbox-streets-v8'
-            }),
-        MarkerLayerOptions(markers: [
-          Marker(
-              point: dumbyData,
-              builder: (context) {
-                return const Icon(
-                  Icons.attribution,
-                  color: Colors.redAccent,
-                  size: 40,
-                );
-              }),
-          if (coords != null)
-            Marker(
+          urlTemplate:
+              "https://api.mapbox.com/styles/v1/aforbes918/ckwmdijqt153q14nl8d25co18/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiYWZvcmJlczkxOCIsImEiOiJja3djemlxYjcwNWd1MnhwaTJ3a252YjR1In0.Bg4yEPvnwU1VJsdZmS2dFA",
+          additionalOptions: {
+            'accessToken':
+                'pk.eyJ1IjoiYWZvcmJlczkxOCIsImEiOiJja3djemlxYjcwNWd1MnhwaTJ3a252YjR1In0.Bg4yEPvnwU1VJsdZmS2dFA',
+            'id': 'mapbox.mapbox-streets-v8'
+          },
+        ),
+        MarkerLayerOptions(
+          markers: [
+            if (postLocation != null)
+              Marker(
+                point: postLocation,
+                builder: (context) {
+                  return const Icon(
+                    Icons.attribution,
+                    color: Colors.redAccent,
+                    size: 40,
+                  );
+                },
+              ),
+            if (coords != null)
+              Marker(
                 point: coords!,
                 builder: (context) {
                   return const Icon(
@@ -64,8 +65,10 @@ class _MapScreenState extends State<MapScreen> {
                     color: Colors.blueAccent,
                     size: 40,
                   );
-                })
-        ])
+                },
+              ),
+          ],
+        )
       ],
     );
   }

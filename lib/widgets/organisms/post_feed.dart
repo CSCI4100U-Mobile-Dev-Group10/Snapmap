@@ -5,8 +5,17 @@ import 'package:snapmap/widgets/atoms/loading.dart';
 import 'package:snapmap/widgets/organisms/single_post.dart';
 
 class PostFeed extends StatelessWidget {
-  const PostFeed(this.posts, {Key? key}) : super(key: key);
+  const PostFeed(
+    this.posts,
+    this.feeds, {
+    this.setFeed,
+    Key? key,
+  }) : super(key: key);
+
   final Stream<QuerySnapshot<Map<String, dynamic>>> posts;
+
+  final void Function(String)? setFeed;
+  final List<String> feeds;
 
   @override
   Widget build(BuildContext context) {
@@ -25,14 +34,32 @@ class PostFeed extends StatelessWidget {
         return SizedBox(
           height: size.height,
           width: size.width,
-          child: PageView.builder(
-            padEnds: false,
-            scrollDirection: Axis.vertical,
-            physics: const PageScrollPhysics(),
-            itemCount: data.length,
-            itemBuilder: (ctx, index) {
-              return SinglePost(data[index]);
-            },
+          child: Stack(
+            children: [
+              PageView.builder(
+                padEnds: false,
+                scrollDirection: Axis.vertical,
+                physics: const PageScrollPhysics(),
+                itemCount: data.length,
+                itemBuilder: (ctx, index) {
+                  return SinglePost(data[index]);
+                },
+              ),
+              // TODO Tab controls here
+
+              /// [feeds] contains the names of the feeds for the buttons
+              ///
+              /// Only show the buttons if:
+              /// [setFeed] is not null
+              /// and feeds.length > 1
+              ///
+              /// That way we can reuse this widget for the profile screen
+              ///
+              /// example:
+              /// feeds = ['Friends', 'Locations'];
+              /// when they press Friends... call setFeed('Friends')
+              /// when they press Locations... call setFeed('Locations')
+            ],
           ),
         );
       },
