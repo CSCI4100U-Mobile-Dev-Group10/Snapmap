@@ -279,13 +279,13 @@ class _LoginFormState extends State<LoginForm> {
                           errorExists = false;
                           pageFlag = false;
                           setState(() {});
-                          Timer(Duration(milliseconds: 50), () {
+                          Timer(const Duration(milliseconds: 50), () {
                             Navigator.pushNamed(
-                                context, ProfileCreationScreen.routeId1);
+                                context, ProfileCreationScreen.signup);
                           });
                         }
                       }
-                      Timer(Duration(seconds: 1), () {
+                      Timer(const Duration(seconds: 1), () {
                         _btnController.reset();
                       });
                     } else {

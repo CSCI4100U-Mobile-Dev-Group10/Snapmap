@@ -33,7 +33,7 @@ class _ProfileHeaderState extends State<ProfileHeader> {
           if (widget.showEdit)
             IconButton(
               onPressed: () {
-                Navigator.of(context).pushNamed(ProfileCreationScreen.routeId);
+                Navigator.of(context).pushNamed(ProfileCreationScreen.edit);
               },
               icon: const Icon(Icons.edit),
               iconSize: 30,

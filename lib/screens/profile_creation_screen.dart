@@ -14,8 +14,8 @@ import 'package:snapmap/widgets/molecules/avatar_picker.dart';
 import 'package:snapmap/widgets/organisms/nav_controller.dart';
 
 class ProfileCreationScreen extends StatefulWidget {
-  static const String routeId = '/profile_creation';
-  static const String routeId1 = '/profile_creation';
+  static const String edit = '/profile_creation';
+  static const String signup = '/profile_creation';
   ProfileCreationScreen({Key? key, required this.signUp}) : super(key: key);
 
   bool signUp;
