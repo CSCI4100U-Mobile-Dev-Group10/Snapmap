@@ -47,6 +47,7 @@ dependencies:
   geolocator: ^8.0.0
   qrscan: ^0.3.2
   camera: ^0.9.4+5
+  stream_transform: ^2.0.0
 
 dev_dependencies:
   flutter_test:

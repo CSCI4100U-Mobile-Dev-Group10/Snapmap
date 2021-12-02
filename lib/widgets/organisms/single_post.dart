@@ -7,8 +7,17 @@ class SinglePost extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox.expand(
+      child: FittedBox(
+        fit: BoxFit.cover,
         child: Stack(
-      children: [Image.network(post.imageUrl)],
-    ));
+          children: [
+            Image.network(
+              post.imageUrl,
+              fit: BoxFit.cover,
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

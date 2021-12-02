@@ -1,4 +1,5 @@
 import 'dart:typed_data';
+import 'package:stream_transform/stream_transform.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:geolocator/geolocator.dart';
@@ -17,17 +18,19 @@ class PostService {
   factory PostService.getInstance() => _singleton;
   static final _posts = FirebaseFirestore.instance.collection("Posts");
 
-  Stream<List<Post>> getFriendPostsForUser(User user) {
-    // if (user.friends.isEmpty) {
-    //   return Stream.empty();
-    // }
+  Stream<QuerySnapshot<Map<String, dynamic>>> getFriendPostsForUser(User user) {
+    List<Object?> filterArray = (user.friends.isNotEmpty) ? user.friends : [''];
+    print('-------- POST --------');
+    print('filterArray => $filterArray');
     Stream<QuerySnapshot<Map<String, dynamic>>> results = _posts
-        .where('username', arrayContains: user.friends)
-        .where('imageUrl', isNotEqualTo: '')
+        //.where('username', arrayContainsAny: filterArray)
+//.where('imageUrl', isNotEqualTo: '')
         .snapshots();
-    return results.map((list) => list.docs
-        .map((result) => Post.fromMap(result.id, result.data()))
-        .toList());
+    results.listen((event) {
+      print('---------- event ------');
+      print(event.docs.map((e) => e.id).toList());
+    });
+    return results;
   }
 
   Future<List<Post>> getPostsForCurrentUser() async {
@@ -70,6 +73,11 @@ class PostService {
               'longitude',
               isLessThanOrEqualTo: long + longRange,
               isGreaterThanOrEqualTo: long - longRange,
+            )
+            .where(
+              'username',
+              isNotEqualTo:
+                  UserService.getInstance().getCurrentUser()!.username,
             )
             .where('imageUrl', isNotEqualTo: '')
             .get())

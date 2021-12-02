@@ -26,12 +26,13 @@ class Post {
   });
 
   factory Post.fromMap(String id, Map<String, dynamic> data) {
+    print('post => $id');
     return Post(
       data['username'],
       data['imageUrl'],
       LatLng(data['lat'], data['long']),
       id: id,
-      likes: data['likes'],
+      likes: List<String>.from(data['likes']),
     );
   }
 

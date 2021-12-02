@@ -33,12 +33,6 @@ class SnapMap extends StatelessWidget {
         // '/cameraScreen': (_) => CameraViewScreen(),
       },
       initialRoute: AuthScreen.routeId,
-      builder: (BuildContext context, Widget? child) {
-        return Container(
-          color: Colors.white,
-          child: SafeArea(child: child ?? Container()),
-        );
-      },
     );
   }
 }
