@@ -21,7 +21,7 @@ class _NavControllerState extends State<NavController> {
     const SocialFeedScreen(),
     const CameraViewScreen(),
     const ProfileScreen(),
-    const MapScreen()
+    // const MapScreen()
   ];
 
   void onTabTapped(int index) {
@@ -67,10 +67,10 @@ class _NavControllerState extends State<NavController> {
               label: '',
             ),
             //test Section to verfy map is working
-            BottomNavigationBarItem(
-              icon: Icon(Icons.map),
-              label: '',
-            ),
+            // BottomNavigationBarItem(
+            //   icon: Icon(Icons.map),
+            //   label: '',
+            // ),
           ],
         ),
       ),
