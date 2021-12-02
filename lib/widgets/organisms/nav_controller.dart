@@ -48,11 +48,11 @@ class _NavControllerState extends State<NavController> {
           type: BottomNavigationBarType.shifting,
           iconSize: 30,
           selectedIconTheme: const IconThemeData(
-            color: Colors.blue,
+            color: Color(0xFF0EA47A),
             size: 40,
           ),
-          selectedItemColor: Colors.blue,
-          unselectedItemColor: Colors.grey,
+          selectedItemColor: const Color(0xFF0EA47A),
+          unselectedItemColor: const Color(0xFF12D39D),
           items: const [
             BottomNavigationBarItem(
               icon: Icon(Icons.photo_library),

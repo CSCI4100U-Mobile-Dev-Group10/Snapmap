@@ -37,6 +37,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ProfileTabs(icon: Icons.qr_code),
                       ProfileTabs(icon: Icons.person_add_alt_1)
                     ],
+                    indicatorColor: Color(0xFF12D39D),
                   ),
                   SizedBox(
                       height: 400,

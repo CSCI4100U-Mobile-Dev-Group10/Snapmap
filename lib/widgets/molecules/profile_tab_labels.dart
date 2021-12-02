@@ -6,6 +6,6 @@ class ProfileTabs extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Tab(child: Icon(icon, size: 30, color: Colors.blue));
+    return Tab(child: Icon(icon, size: 30, color: const Color(0xFF12D39D)));
   }
 }

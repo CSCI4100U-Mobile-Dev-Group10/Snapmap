@@ -5,6 +5,7 @@ import 'package:snapmap/services/camera_service.dart';
 import 'screens/auth_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:snapmap/widgets/organisms/nav_controller.dart';
+import 'widgets/themes/dark_green.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,7 +23,7 @@ class SnapMap extends StatelessWidget {
     return MaterialApp(
       title: 'SnapMap',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: MaterialColor(0xFF0EA47A, darkGreen),
       ),
       routes: {
         AuthScreen.routeId: (_) => const AuthScreen(),
