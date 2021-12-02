@@ -10,7 +10,7 @@ class Avatar extends StatelessWidget {
   Widget build(BuildContext context) {
     return CircleAvatar(
       radius: 55,
-      backgroundColor: Colors.blue,
+      backgroundColor: const Color(0xFF12D39D),
       child: ClipOval(
         child: Builder(
           builder: (BuildContext ctx) {

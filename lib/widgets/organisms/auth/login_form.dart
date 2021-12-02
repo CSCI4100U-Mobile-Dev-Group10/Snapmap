@@ -48,10 +48,10 @@ class _LoginFormState extends State<LoginForm> {
               // create stack of image / appropriate text depending on
               // if user is on login form or signup form
               Stack(
-                alignment: Alignment.center,
+                alignment: Alignment.bottomLeft,
                 children: [
                   Opacity(
-                      opacity: 0.5,
+                      opacity: 0.6,
                       child:
                           Image.asset('images/login_signup_form_picture.jpg')),
                   // change text depending on signup / login
@@ -68,6 +68,9 @@ class _LoginFormState extends State<LoginForm> {
               const SizedBox(height: 20),
               TextFormField(
                 decoration: const InputDecoration(
+                  errorBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Color(0xFF0EA47A))),
+                  errorStyle: TextStyle(color: Color(0xFF0EA47A)),
                   prefixIcon: Icon(Icons.account_circle),
                   labelText: "Username",
                   border: OutlineInputBorder(),
@@ -87,6 +90,9 @@ class _LoginFormState extends State<LoginForm> {
                 visible: pageFlag,
                 child: TextFormField(
                   decoration: const InputDecoration(
+                    errorBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Color(0xFF0EA47A))),
+                    errorStyle: TextStyle(color: Color(0xFF0EA47A)),
                     prefixIcon: Icon(Icons.alternate_email),
                     labelText: "Email",
                     border: OutlineInputBorder(),
@@ -112,6 +118,9 @@ class _LoginFormState extends State<LoginForm> {
                 enableSuggestions: false,
                 autocorrect: false,
                 decoration: InputDecoration(
+                  errorBorder: const OutlineInputBorder(
+                      borderSide: BorderSide(color: Color(0xFF0EA47A))),
+                  errorStyle: const TextStyle(color: Color(0xFF0EA47A)),
                   labelText: "Password",
                   prefixIcon: const Icon(Icons.lock),
                   border: const OutlineInputBorder(),
@@ -143,6 +152,9 @@ class _LoginFormState extends State<LoginForm> {
                   enableSuggestions: false,
                   autocorrect: false,
                   decoration: const InputDecoration(
+                    errorBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Color(0xFF0EA47A))),
+                    errorStyle: TextStyle(color: Color(0xFF0EA47A)),
                     labelText: "Confirm Password",
                     prefixIcon: Icon(Icons.lock),
                     border: OutlineInputBorder(),
@@ -161,10 +173,8 @@ class _LoginFormState extends State<LoginForm> {
               const SizedBox(height: 10),
               Visibility(
                   visible: errorExists,
-                  child: Text(
-                    errorText,
-                    style: const TextStyle(color: Colors.red),
-                  )),
+                  child: Text(errorText,
+                      style: const TextStyle(color: Color(0xFF12D39D)))),
               Visibility(
                 visible: !pageFlag,
                 child: InkWell(
@@ -224,7 +234,7 @@ class _LoginFormState extends State<LoginForm> {
                   style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.only(
                           top: 15, bottom: 15, left: 70, right: 70),
-                      primary: Colors.blue),
+                      primary: const Color(0xFF12D39D)),
                   onPressed: () async {
                     if (_formKey.currentState!.validate()) {
                       _formKey.currentState!.save();
@@ -300,7 +310,9 @@ class _LoginFormState extends State<LoginForm> {
             ],
           ),
         ),
-        const SizedBox(height: 245,),
+        const SizedBox(
+          height: 245,
+        ),
       ],
     );
   }

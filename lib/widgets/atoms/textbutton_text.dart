@@ -8,6 +8,6 @@ class TextButtonText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(text, style: const TextStyle(color: Colors.blue));
+    return Text(text, style: const TextStyle(color: Color(0xFF12D39D)));
   }
 }

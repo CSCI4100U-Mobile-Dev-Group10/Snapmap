@@ -35,7 +35,7 @@ class _DialogBaseState extends State<DialogBase> {
           },
         ),
         IconButton(
-          icon: const Icon(Icons.check, color: Colors.green),
+          icon: const Icon(Icons.check, color: Color(0xFF12D39D)),
           onPressed: () async {
             if (!isAccepted) {
               setState(() {
