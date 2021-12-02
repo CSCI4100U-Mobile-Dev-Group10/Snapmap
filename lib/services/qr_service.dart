@@ -1,12 +1,11 @@
 import 'package:snapmap/models/user.dart';
 import 'package:snapmap/services/user_service.dart';
 
-const String _prepend = 'snapmap://';
+const String _prepend = 'snapmap//';
 
 /// This is the string generated for qr code for this user
-String? generateQRCode() {
-  User? user = UserService.getInstance().getCurrentUser();
-  if (user == null) return null;
+String generateQRCode() {
+  User user = UserService.getInstance().getCurrentUser()!;
   return '${_prepend}add/${user.username}';
 }
 
