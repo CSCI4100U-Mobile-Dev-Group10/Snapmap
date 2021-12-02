@@ -224,7 +224,7 @@ class _LoginFormState extends State<LoginForm> {
                   style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.only(
                           top: 15, bottom: 15, left: 70, right: 70),
-                      primary: Colors.blue),
+                      primary: const Color(0xFF12D39D)),
                   onPressed: () async {
                     if (_formKey.currentState!.validate()) {
                       _formKey.currentState!.save();
@@ -300,7 +300,9 @@ class _LoginFormState extends State<LoginForm> {
             ],
           ),
         ),
-        const SizedBox(height: 245,),
+        const SizedBox(
+          height: 245,
+        ),
       ],
     );
   }
