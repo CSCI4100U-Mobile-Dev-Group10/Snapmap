@@ -1,28 +1,50 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:snapmap/models/post.dart';
 import 'package:snapmap/models/user.dart';
+import 'package:snapmap/services/geo_service.dart';
 import 'package:snapmap/services/post_service.dart';
 import 'package:snapmap/services/user_service.dart';
+import 'package:snapmap/utils/logger.dart';
 import 'package:snapmap/widgets/organisms/post_feed.dart';
 
 class SocialFeedScreen extends StatefulWidget {
   const SocialFeedScreen({Key? key}) : super(key: key);
 
   @override
-  _SocialFeedScreenState createState() => _SocialFeedScreenState();
+  State<SocialFeedScreen> createState() => _SocialFeedScreenState();
 }
 
 class _SocialFeedScreenState extends State<SocialFeedScreen> {
-  PostService posts = PostService.getInstance();
-  User user = UserService.getInstance().getCurrentUser()!;
+  final PostService posts = PostService.getInstance();
+  final User user = UserService.getInstance().getCurrentUser()!;
+
+  Map<String, Stream<QuerySnapshot<Map<String, dynamic>>>> feeds = {};
+  late String currentFeed;
+
+  @override
+  void initState() {
+    super.initState();
+    feeds['Friends'] = posts.getFriendPostsForUser(user);
+    getCurrentLocation().then((latlng) async {
+      setState(() {
+        feeds['Nearby'] = posts.getPostsByLocation(latlng);
+      });
+    }).catchError((_) {
+      logger.w('Unable to get current location, cannot show posts nearby');
+    });
+    setState(() {
+      // default to the first feed in the list
+      currentFeed = feeds.keys.first;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    bool hasFriends = user.friends.isNotEmpty;
-    Stream<List<Post>> friends = posts.getFriendPostsForUser(user);
+    // Stream<QuerySnapshot<Map<String, dynamic>>> locations =
+    //     posts.getFriendPostsForUser(user);
 
-    return PostFeed(friends);
+    return SizedBox.expand(
+      child: PostFeed(feeds[currentFeed]!, feeds.keys.toList()),
+    );
   }
 }

@@ -22,31 +22,33 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        ProfileHeader(user),
-        // create TabView to alternate between your QR code and your friend list
-        DefaultTabController(
-            length: 3,
-            child: Column(
-              children: [
-                const TabBar(
-                  tabs: [
-                    ProfileTabs(icon: Icons.people),
-                    ProfileTabs(icon: Icons.qr_code),
-                    ProfileTabs(icon: Icons.person_add_alt_1)
-                  ],
-                ),
-                SizedBox(
-                    height: 400,
-                    child: TabBarView(children: [
-                      FriendsList(user),
-                      FriendCode(user),
-                      const Center(child: Text('Friend Requests Go Here'))
-                    ])),
-              ],
-            ))
-      ],
+    return SafeArea(
+      child: Column(
+        children: [
+          ProfileHeader(user),
+          // create TabView to alternate between your QR code and your friend list
+          DefaultTabController(
+              length: 3,
+              child: Column(
+                children: [
+                  const TabBar(
+                    tabs: [
+                      ProfileTabs(icon: Icons.people),
+                      ProfileTabs(icon: Icons.qr_code),
+                      ProfileTabs(icon: Icons.person_add_alt_1)
+                    ],
+                  ),
+                  SizedBox(
+                      height: 400,
+                      child: TabBarView(children: [
+                        FriendsList(user),
+                        FriendCode(user),
+                        const Center(child: Text('Friend Requests Go Here'))
+                      ])),
+                ],
+              ))
+        ],
+      ),
     );
   }
 }

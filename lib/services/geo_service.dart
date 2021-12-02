@@ -1,7 +1,8 @@
 import 'package:geolocator/geolocator.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:snapmap/models/exceptions/permissions_exception.dart';
 
-Future<Position> getCurrentLocation() async {
+Future<LatLng> getCurrentLocation() async {
   bool serviceEnabled;
   LocationPermission permission;
 
@@ -35,8 +36,10 @@ Future<Position> getCurrentLocation() async {
 
   // When we reach here, permissions are granted and we can
   // continue accessing the position of the device.
-  return await Geolocator.getCurrentPosition(
+  Position pos = await Geolocator.getCurrentPosition(
     /// Enabled for emulator usage
     forceAndroidLocationManager: true,
   );
+
+  return LatLng(pos.latitude, pos.longitude);
 }
