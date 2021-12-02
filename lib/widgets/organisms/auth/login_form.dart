@@ -73,14 +73,14 @@ class _LoginFormState extends State<LoginForm> {
                     decoration: const InputDecoration(
                       errorBorder: OutlineInputBorder(
                           borderSide: BorderSide(color: Color(0xFF0EA47A))),
-                      errorStyle: TextStyle(color: Color(0xFF0EA47A)),
+                      errorStyle: TextStyle(color: Colors.red),
                       prefixIcon: Icon(Icons.account_circle),
                       labelText: "Username",
                       border: OutlineInputBorder(),
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'This field needs input';
+                        return 'Please Enter a Username';
                       }
                       return null;
                     },
@@ -95,7 +95,7 @@ class _LoginFormState extends State<LoginForm> {
                       decoration: const InputDecoration(
                         errorBorder: OutlineInputBorder(
                             borderSide: BorderSide(color: Color(0xFF0EA47A))),
-                        errorStyle: TextStyle(color: Color(0xFF0EA47A)),
+                        errorStyle: TextStyle(color: Colors.red),
                         prefixIcon: Icon(Icons.alternate_email),
                         labelText: "Email",
                         border: OutlineInputBorder(),
@@ -103,7 +103,7 @@ class _LoginFormState extends State<LoginForm> {
                       validator: (value) {
                         // check to see if email for sign up is valid
                         if (value == null || value.isEmpty) {
-                          return 'This field needs input';
+                          return 'Please Enter an Email Address';
                         } else if (!emailValidator(value)) {
                           return 'Enter valid email';
                         } else {
@@ -123,7 +123,7 @@ class _LoginFormState extends State<LoginForm> {
                     decoration: InputDecoration(
                       errorBorder: const OutlineInputBorder(
                           borderSide: BorderSide(color: Color(0xFF0EA47A))),
-                      errorStyle: const TextStyle(color: Color(0xFF0EA47A)),
+                      errorStyle: const TextStyle(color: Colors.red),
                       labelText: "Password",
                       prefixIcon: const Icon(Icons.lock),
                       border: const OutlineInputBorder(),
@@ -139,7 +139,7 @@ class _LoginFormState extends State<LoginForm> {
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'This field needs input';
+                        return 'Please Enter a Password';
                       }
                       return null;
                     },
@@ -157,14 +157,14 @@ class _LoginFormState extends State<LoginForm> {
                       decoration: const InputDecoration(
                         errorBorder: OutlineInputBorder(
                             borderSide: BorderSide(color: Color(0xFF0EA47A))),
-                        errorStyle: TextStyle(color: Color(0xFF0EA47A)),
+                        errorStyle: TextStyle(color: Colors.red),
                         labelText: "Confirm Password",
                         prefixIcon: Icon(Icons.lock),
                         border: OutlineInputBorder(),
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'This field needs input';
+                          return 'Please Confirm Your Password';
                         }
                         return null;
                       },
@@ -250,7 +250,7 @@ class _LoginFormState extends State<LoginForm> {
                             if (returnValue == false) {
                               // if the login fails (user does not exist) or entered wrong password
                               errorText =
-                                  'login attempt failed email or password is wrong';
+                                  'Login Attempt Failed. Email or Password Incorrect';
                               errorExists = true;
                               setState(() {});
                             } else {
