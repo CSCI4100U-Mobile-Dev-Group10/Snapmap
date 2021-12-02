@@ -6,6 +6,7 @@ import 'package:snapmap/screens/profile_creation_screen.dart';
 import 'package:snapmap/services/email_service.dart';
 import 'package:snapmap/services/auth_service.dart';
 import 'package:snapmap/utils/logger.dart';
+import 'package:snapmap/widgets/themes/dark_green.dart';
 import '../nav_controller.dart';
 import '../../molecules/welcome_section.dart';
 import '../../molecules/login_page_button_info.dart';
@@ -51,10 +52,10 @@ class _LoginFormState extends State<LoginForm> {
               // create stack of image / appropriate text depending on
               // if user is on login form or signup form
               Stack(
-                alignment: Alignment.center,
+                alignment: Alignment.bottomLeft,
                 children: [
                   Opacity(
-                      opacity: 0.5,
+                      opacity: 0.6,
                       child:
                           Image.asset('images/login_signup_form_picture.jpg')),
                   // change text depending on signup / login
@@ -164,10 +165,8 @@ class _LoginFormState extends State<LoginForm> {
               const SizedBox(height: 10),
               Visibility(
                   visible: errorExists,
-                  child: Text(
-                    errorText,
-                    style: const TextStyle(color: Colors.red),
-                  )),
+                  child: Text(errorText,
+                      style: const TextStyle(color: Colors.red))),
               Visibility(
                 visible: !pageFlag,
                 child: InkWell(
@@ -223,6 +222,7 @@ class _LoginFormState extends State<LoginForm> {
               ),
               const SizedBox(height: 10),
               RoundedLoadingButton(
+                  color: MaterialColor(0xFF0EA47A, darkGreen),
                   controller: _btnController,
                   onPressed: () async {
                     if (_formKey.currentState!.validate()) {
@@ -281,7 +281,7 @@ class _LoginFormState extends State<LoginForm> {
                           setState(() {});
                           Timer(Duration(milliseconds: 50), () {
                             Navigator.pushNamed(
-                                context, ProfileCreationScreen.routeId);
+                                context, ProfileCreationScreen.routeId1);
                           });
                         }
                       }
@@ -297,70 +297,6 @@ class _LoginFormState extends State<LoginForm> {
                           text: 'Sign Up', icon: Icon(Icons.person))
                       : const LoginPageButton(
                           text: 'Login', icon: Icon(Icons.login))),
-              // ElevatedButton(
-              //     // set colour of button to match image in title stack
-              //     style: ElevatedButton.styleFrom(
-              //         padding: const EdgeInsets.only(
-              //             top: 15, bottom: 15, left: 70, right: 70),
-              //         primary: Colors.blue),
-              //     onPressed: () async {
-              //       if (_formKey.currentState!.validate()) {
-              //         _formKey.currentState!.save();
-              //         if (!pageFlag) {
-              //           // authorize user login
-              //           var returnValue = await authUser({
-              //             'username': username,
-              //             'password': password,
-              //           });
-              //           if (returnValue == false) {
-              //             // if the login fails (user does not exist) or entered wrong password
-              //             errorText =
-              //                 'login attempt failed email or password is wrong';
-              //             errorExists = true;
-              //             setState(() {});
-              //           } else {
-              //             errorExists = false;
-              //             setState(() {});
-              //             Navigator.pushNamed(context, NavController.routeId);
-              //           }
-              //         } else {
-              //           // add users sign up info to database
-              //           var returnValue = await signUp({
-              //             'username': username,
-              //             'email': email,
-              //             'password': password,
-              //             'conPass': confirmPass,
-              //           });
-              //           if (returnValue == 'username') {
-              //             errorExists = true;
-              //             errorText = 'Username already in use';
-              //             setState(() {});
-              //           } else if (returnValue == 'email') {
-              //             errorExists = true;
-              //             errorText = 'Email already in use';
-              //             setState(() {});
-              //           } else if (returnValue == 'password') {
-              //             errorText =
-              //                 'Confirmation of password does not match entered password';
-              //             errorExists = true;
-              //             setState(() {});
-              //           } else {
-              //             errorExists = false;
-              //             pageFlag = false;
-              //             setState(() {});
-              //             Navigator.pushNamed(
-              //                 context, ProfileCreationScreen.routeId);
-              //           }
-              //         }
-              //       }
-              //     },
-              //     // set the button to have different text / icon depending
-              //     // on the screen
-              //     child: pageFlag
-              //         ? const LoginPageButton(
-              //             text: 'Sign Up', icon: Icon(Icons.person))
-              //         : const LoginPageButton(
-              //             text: 'Login', icon: Icon(Icons.login))),
               const SizedBox(height: 12),
               const LoginDivider(),
               TextButton(

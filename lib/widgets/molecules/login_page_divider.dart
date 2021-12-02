@@ -9,13 +9,13 @@ class LoginDivider extends StatelessWidget {
     return Stack(
       alignment: Alignment.center,
       children: [
-        const Divider(thickness: 1, color: Colors.blue),
+        const Divider(thickness: 1.5, color: Color(0xFF12D39D)),
         // stack text on top of divider with padding to add some whitespace
         // between text and divider
         Container(
           decoration: const BoxDecoration(color: Colors.white),
           padding: const EdgeInsets.all(2),
-          child: const Text('OR', style: TextStyle(color: Colors.blue)),
+          child: const Text('OR', style: TextStyle(color: Color(0xFF12D39D))),
         ),
       ],
     );
