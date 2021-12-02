@@ -16,14 +16,19 @@ class WelcomeSection extends StatelessWidget {
       children: [
         // provides a welcome message for the user
         Text(message,
-            style: const TextStyle(fontSize: 35, fontWeight: FontWeight.bold)),
-        const SizedBox(height: 8),
+            style: const TextStyle(
+                fontSize: 38,
+                fontWeight: FontWeight.bold,
+                color: Colors.black87)),
         // provides extra information for the user
+        const SizedBox(height: 5),
         Text(information,
             style: const TextStyle(
-                fontSize: 12,
+                fontSize: 14,
                 fontWeight: FontWeight.bold,
-                color: Colors.black54))
+                color: Colors.black54)),
+
+        const SizedBox(height: 10),
       ],
     );
   }
