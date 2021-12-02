@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:snapmap/screens/map_screen.dart';
 import 'package:snapmap/screens/profile_creation_screen.dart';
 import 'package:snapmap/services/camera_service.dart';
 import 'screens/auth_screen.dart';
@@ -33,18 +34,14 @@ class SnapMap extends StatelessWidget {
         ProfileCreationScreen.signup: (_) => ProfileCreationScreen(
               signUp: true,
             ),
+        MapScreen.routeId: (_) => const MapScreen(),
+
         // Below are accessed through NavController
         // '/socialFeed': (_) => SocialFeedScreen(),
         // '/profileScreen': (_) => ProfileScreen(),
         // '/cameraScreen': (_) => CameraViewScreen(),
       },
       initialRoute: AuthScreen.routeId,
-      builder: (BuildContext context, Widget? child) {
-        return Container(
-          color: Colors.white,
-          child: SafeArea(child: child ?? Container()),
-        );
-      },
     );
   }
 }
