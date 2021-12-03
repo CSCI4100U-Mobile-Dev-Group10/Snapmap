@@ -1,11 +1,15 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:rounded_loading_button/rounded_loading_button.dart';
 import 'package:snapmap/models/user.dart';
 import 'package:snapmap/screens/profile_creation_screen.dart';
 import 'package:snapmap/services/email_service.dart';
 import 'package:snapmap/services/auth_service.dart';
 import 'package:snapmap/services/user_service.dart';
 import 'package:snapmap/utils/logger.dart';
+import 'package:snapmap/widgets/themes/dark_green.dart';
 import '../nav_controller.dart';
 import '../../molecules/welcome_section.dart';
 import '../../molecules/login_page_button_info.dart';
@@ -24,6 +28,8 @@ class LoginForm extends StatefulWidget {
 class _LoginFormState extends State<LoginForm> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _accountRecovery = TextEditingController();
+  final RoundedLoadingButtonController _btnController =
+      RoundedLoadingButtonController();
 
   String email = '';
   String password = '';
@@ -72,7 +78,7 @@ class _LoginFormState extends State<LoginForm> {
                   TextFormField(
                     decoration: const InputDecoration(
                       errorBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Color(0xFF0EA47A))),
+                          borderSide: BorderSide(color: Colors.red)),
                       errorStyle: TextStyle(color: Colors.red),
                       prefixIcon: Icon(Icons.account_circle),
                       labelText: "Username",
@@ -94,7 +100,7 @@ class _LoginFormState extends State<LoginForm> {
                     child: TextFormField(
                       decoration: const InputDecoration(
                         errorBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Color(0xFF0EA47A))),
+                            borderSide: BorderSide(color: Colors.red)),
                         errorStyle: TextStyle(color: Colors.red),
                         prefixIcon: Icon(Icons.alternate_email),
                         labelText: "Email",
@@ -122,7 +128,7 @@ class _LoginFormState extends State<LoginForm> {
                     autocorrect: false,
                     decoration: InputDecoration(
                       errorBorder: const OutlineInputBorder(
-                          borderSide: BorderSide(color: Color(0xFF0EA47A))),
+                          borderSide: BorderSide(color: Colors.red)),
                       errorStyle: const TextStyle(color: Colors.red),
                       labelText: "Password",
                       prefixIcon: const Icon(Icons.lock),
@@ -156,7 +162,7 @@ class _LoginFormState extends State<LoginForm> {
                       autocorrect: false,
                       decoration: const InputDecoration(
                         errorBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Color(0xFF0EA47A))),
+                            borderSide: BorderSide(color: Colors.red)),
                         errorStyle: TextStyle(color: Colors.red),
                         labelText: "Confirm Password",
                         prefixIcon: Icon(Icons.lock),
@@ -177,7 +183,7 @@ class _LoginFormState extends State<LoginForm> {
                   Visibility(
                       visible: errorExists,
                       child: Text(errorText,
-                          style: const TextStyle(color: Color(0xFF12D39D)))),
+                          style: const TextStyle(color: Colors.red))),
                   Visibility(
                     visible: !pageFlag,
                     child: InkWell(
@@ -232,17 +238,15 @@ class _LoginFormState extends State<LoginForm> {
                     ),
                   ),
                   const SizedBox(height: 10),
-                  ElevatedButton(
-                      // set colour of button to match image in title stack
-                      style: ElevatedButton.styleFrom(
-                          padding: const EdgeInsets.only(
-                              top: 15, bottom: 15, left: 70, right: 70),
-                          primary: const Color(0xFF12D39D)),
+                  RoundedLoadingButton(
+                      color: MaterialColor(0xFF0EA47A, darkGreen),
+                      controller: _btnController,
                       onPressed: () async {
                         if (_formKey.currentState!.validate()) {
                           _formKey.currentState!.save();
                           if (!pageFlag) {
                             // authorize user login
+                            // _btnController.start();
                             var returnValue = await authUser({
                               'username': username,
                               'password': password,
@@ -250,17 +254,22 @@ class _LoginFormState extends State<LoginForm> {
                             if (returnValue == false) {
                               // if the login fails (user does not exist) or entered wrong password
                               errorText =
-                                  'Login Attempt Failed. Email or Password Incorrect';
+                                  'login attempt failed email or password is wrong';
                               errorExists = true;
+                              _btnController.error();
                               setState(() {});
                             } else {
                               errorExists = false;
+                              _btnController.success();
                               setState(() {});
-                              Navigator.pushNamed(
-                                  context, NavController.routeId);
+                              Timer(const Duration(milliseconds: 150), () {
+                                Navigator.pushNamed(
+                                    context, NavController.routeId);
+                              });
                             }
                           } else {
                             // add users sign up info to database
+                            // _btnController.start();
                             var returnValue = await signUp({
                               'username': username,
                               'email': email,
@@ -268,30 +277,38 @@ class _LoginFormState extends State<LoginForm> {
                               'conPass': confirmPass,
                             });
                             if (returnValue == 'username') {
+                              _btnController.error();
                               errorExists = true;
                               errorText = 'Username already in use';
                               setState(() {});
                             } else if (returnValue == 'email') {
+                              _btnController.error();
                               errorExists = true;
                               errorText = 'Email already in use';
                               setState(() {});
                             } else if (returnValue == 'password') {
+                              _btnController.error();
                               errorText =
                                   'Confirmation of password does not match entered password';
                               errorExists = true;
                               setState(() {});
                             } else {
+                              _btnController.success();
                               errorExists = false;
-                              pageFlag = false;
                               setState(() {});
-                              Navigator.pushNamed(
-                                  context, ProfileCreationScreen.routeId);
+                              Timer(const Duration(milliseconds: 150), () {
+                                Navigator.pushNamed(
+                                    context, ProfileCreationScreen.routeId);
+                              });
                             }
                           }
+                          Timer(const Duration(seconds: 1), () {
+                            _btnController.reset();
+                          });
+                        } else {
+                          _btnController.reset();
                         }
                       },
-                      // set the button to have different text / icon depending
-                      // on the screen
                       child: pageFlag
                           ? const LoginPageButton(
                               text: 'Sign Up', icon: Icon(Icons.person))
