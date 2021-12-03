@@ -78,7 +78,7 @@ class _LoginFormState extends State<LoginForm> {
                   TextFormField(
                     decoration: const InputDecoration(
                       errorBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Color(0xFF0EA47A))),
+                          borderSide: BorderSide(color: Colors.red)),
                       errorStyle: TextStyle(color: Colors.red),
                       prefixIcon: Icon(Icons.account_circle),
                       labelText: "Username",
@@ -100,7 +100,7 @@ class _LoginFormState extends State<LoginForm> {
                     child: TextFormField(
                       decoration: const InputDecoration(
                         errorBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Color(0xFF0EA47A))),
+                            borderSide: BorderSide(color: Colors.red)),
                         errorStyle: TextStyle(color: Colors.red),
                         prefixIcon: Icon(Icons.alternate_email),
                         labelText: "Email",
@@ -128,7 +128,7 @@ class _LoginFormState extends State<LoginForm> {
                     autocorrect: false,
                     decoration: InputDecoration(
                       errorBorder: const OutlineInputBorder(
-                          borderSide: BorderSide(color: Color(0xFF0EA47A))),
+                          borderSide: BorderSide(color: Colors.red)),
                       errorStyle: const TextStyle(color: Colors.red),
                       labelText: "Password",
                       prefixIcon: const Icon(Icons.lock),
@@ -162,7 +162,7 @@ class _LoginFormState extends State<LoginForm> {
                       autocorrect: false,
                       decoration: const InputDecoration(
                         errorBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Color(0xFF0EA47A))),
+                            borderSide: BorderSide(color: Colors.red)),
                         errorStyle: TextStyle(color: Colors.red),
                         labelText: "Confirm Password",
                         prefixIcon: Icon(Icons.lock),
@@ -183,7 +183,7 @@ class _LoginFormState extends State<LoginForm> {
                   Visibility(
                       visible: errorExists,
                       child: Text(errorText,
-                          style: const TextStyle(color: Color(0xFF12D39D)))),
+                          style: const TextStyle(color: Colors.red))),
                   Visibility(
                     visible: !pageFlag,
                     child: InkWell(
