@@ -3,6 +3,7 @@ import 'package:snapmap/models/user.dart';
 import 'package:snapmap/services/user_service.dart';
 import 'package:snapmap/widgets/molecules/friend_code.dart';
 import 'package:snapmap/widgets/molecules/profile_header.dart';
+import 'package:snapmap/widgets/organisms/friend_request_list.dart';
 import 'package:snapmap/widgets/organisms/friends_list.dart';
 import '../widgets/molecules/profile_tab_labels.dart';
 
@@ -40,12 +41,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     indicatorColor: Color(0xFF12D39D),
                   ),
                   SizedBox(
-                      height: 400,
-                      child: TabBarView(children: [
-                        FriendsList(user),
-                        FriendCode(user),
-                        const Center(child: Text('Friend Requests Go Here'))
-                      ])),
+                    height: 400,
+                    child: TabBarView(children: [
+                      FriendsList(user),
+                      FriendCode(user),
+                      FriendRequestList(),
+                    ]),
+                  ),
                 ],
               ))
         ],
