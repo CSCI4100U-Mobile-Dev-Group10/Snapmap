@@ -13,13 +13,17 @@ class ErrorDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DialogBase(
+    return AlertDialog(
       title: Text(title),
       content: Text(content),
-      callback: () async {
-        Navigator.of(context).pop();
-      },
-      showCancel: false,
+      actions: [
+        IconButton(
+          icon: const Icon(Icons.close, color: Color(0xFF12D39D)),
+          onPressed: () async {
+            Navigator.pop(context);
+          },
+        ),
+      ],
     );
   }
 }

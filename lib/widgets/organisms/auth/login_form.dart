@@ -263,7 +263,7 @@ class _LoginFormState extends State<LoginForm> {
                               _btnController.success();
                               setState(() {});
                               Timer(const Duration(milliseconds: 150), () {
-                                Navigator.pushNamed(
+                                Navigator.pushReplacementNamed(
                                     context, NavController.routeId);
                               });
                             }
@@ -297,7 +297,7 @@ class _LoginFormState extends State<LoginForm> {
                               errorExists = false;
                               setState(() {});
                               Timer(const Duration(milliseconds: 150), () {
-                                Navigator.pushNamed(
+                                Navigator.pushReplacementNamed(
                                     context, ProfileCreationScreen.routeId);
                               });
                             }

@@ -1,8 +1,8 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:snapmap/models/exceptions/permissions_exception.dart';
 import 'package:snapmap/services/post_service.dart';
+import 'package:snapmap/utils/logger.dart';
 import 'package:snapmap/widgets/atoms/dialog_base.dart';
 import 'package:snapmap/widgets/molecules/error_dialog.dart';
 
@@ -18,8 +18,9 @@ class PostConfirmationDialog extends StatelessWidget {
       callback: () async {
         try {
           await PostService.getInstance().uploadPost(bytes);
-        } on PermissionsException {
-          showDialog(
+        } catch (_) {
+          logger.w('showing error dialog');
+          await showDialog(
             context: context,
             builder: (_) => const ErrorDialog(
               title: 'Error!',

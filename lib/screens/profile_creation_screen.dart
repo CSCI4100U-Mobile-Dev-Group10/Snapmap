@@ -143,7 +143,8 @@ class _ProfileCreationScreenState extends State<ProfileCreationScreen> {
                       }).catchError((e) {
                         logger.e(e);
                       });
-                      Navigator.pushNamed(context, NavController.routeId);
+                      Navigator.pushReplacementNamed(
+                          context, NavController.routeId);
                     }
                   },
                   // make button full width and add icon
