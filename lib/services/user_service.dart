@@ -44,6 +44,7 @@ class UserService {
         doc(username).snapshots();
     _userStream = stream.listen((event) {
       _refresh(event);
+      //TODO handle new friend requests here and create notification for it
     });
   }
 
