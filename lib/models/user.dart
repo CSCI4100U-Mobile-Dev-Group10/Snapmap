@@ -49,8 +49,8 @@ class User {
       data['profileUrl'] ?? '',
       friends: (data['friends'] ?? []).cast<String>(),
       posts: (data['posts'] ?? []).cast<String>(),
-      receivedFriendRequests: (data['friends'] ?? []).cast<String>(),
-      sentFriendRequests: (data['friends'] ?? []).cast<String>(),
+      receivedFriendRequests: (data['receivedFriends'] ?? []).cast<String>(),
+      sentFriendRequests: (data['sentFriends'] ?? []).cast<String>(),
     );
   }
 
