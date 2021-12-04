@@ -12,7 +12,6 @@ class CameraViewScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     void pictureCallback(Uint8List bytes) {
-      // TODO show the createPost Dialog
       showDialog(
         context: context,
         builder: (_) => PostConfirmationDialog(bytes),
@@ -20,7 +19,6 @@ class CameraViewScreen extends StatelessWidget {
     }
 
     void addFriendCallback(String username) {
-      // TODO show the addFriendDialog
       showDialog(
         context: context,
         builder: (_) => FriendRequestDialog(username),

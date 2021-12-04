@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:snapmap/models/user.dart';
+import 'package:snapmap/utils/logger.dart';
 
 class UserService {
   /// Singleton for this class
@@ -84,6 +85,11 @@ class UserService {
     }
   }
 
+  Stream<DocumentSnapshot<Map<String, dynamic>>> currentUserStream() {
+    DocumentReference<Map<String, dynamic>> currentUser = doc(_user!.username);
+    return currentUser.snapshots();
+  }
+
   /// request a friend as the authenticated user
   /// the result is whether the operation was successful
   Future<bool> requestFriend(String otherUsername) async {
@@ -104,8 +110,8 @@ class UserService {
       if (currentData == null || otherData == null) return false;
 
       // add the users to the respective side of the friend request
-      (currentData['sentFriends'] as List<String>).add(otherUsername);
-      (otherData['receivedFriends'] as List<String>).add(_user!.username);
+      (currentData['sentFriends']).add(otherUsername);
+      (otherData['receivedFriends']).add(_user!.username);
 
       // set both users in parallel
       await Future.wait([
@@ -115,6 +121,7 @@ class UserService {
 
       return true;
     } catch (_) {
+      logger.w(_);
       return false;
     }
   }
@@ -135,17 +142,23 @@ class UserService {
 
       // verify that both users exist
       if (currentData == null || otherData == null) return false;
-
+      List currentList = currentData['sentFriends'];
+      List otherList = otherData['receivedFriends'];
       // add the users to the respective side of the friend request
-      (currentData['sentFriends'] as List<String>)
-          .removeWhere((element) => element == otherUsername);
-      (otherData['receivedFriends'] as List<String>)
-          .removeWhere((element) => element == _user!.username);
+      currentList.removeWhere((element) => element == otherUsername);
+      otherList.removeWhere((element) => element == _user!.username);
 
       if (accepted) {
-        (currentData['friends'] as List<String>).add(otherUsername);
-        (otherData['friends'] as List<String>).add(_user!.username);
+        currentData['friends'].add(otherUsername);
+        otherData['friends'].add(_user!.username);
       }
+
+      print('currentList => ${currentList}');
+
+      currentData['sentFriends'] = currentList;
+      otherData['receivedFriends'] = otherList;
+
+      print('currentData[\'sentFriends\'] => ${currentData['sentFriends']}');
 
       // set both users in parallel
       await Future.wait([
