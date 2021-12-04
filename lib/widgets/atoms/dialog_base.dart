@@ -6,13 +6,14 @@ class DialogBase extends StatefulWidget {
     required this.title,
     required this.content,
     required this.callback,
+    this.showCancel = true,
     Key? key,
   }) : super(key: key);
 
   final Widget title;
   final Widget content;
   final Future<void> Function() callback;
-
+  final bool showCancel;
   @override
   State<DialogBase> createState() => _DialogBaseState();
 }
@@ -28,12 +29,13 @@ class _DialogBaseState extends State<DialogBase> {
       title: widget.title,
       content: widget.content,
       actions: [
-        IconButton(
-          icon: const Icon(Icons.cancel_rounded, color: Colors.redAccent),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
+        if (widget.showCancel)
+          IconButton(
+            icon: const Icon(Icons.cancel_rounded, color: Colors.redAccent),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
         IconButton(
           icon: const Icon(Icons.check, color: Color(0xFF12D39D)),
           onPressed: () async {
