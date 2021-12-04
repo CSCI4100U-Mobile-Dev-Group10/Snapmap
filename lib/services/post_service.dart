@@ -1,8 +1,6 @@
 import 'dart:typed_data';
-import 'package:stream_transform/stream_transform.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:snapmap/models/post.dart';
 import 'package:snapmap/models/user.dart';
