@@ -20,6 +20,12 @@ class FriendRequestList extends StatelessWidget {
           DocumentSnapshot<Map<String, dynamic>> doc =
               (snap.data! as DocumentSnapshot<Map<String, dynamic>>);
           User data = User.fromMap(doc.id, doc.data()!);
+          if (data.receivedFriendRequests.isEmpty) {
+            return const Center(
+              child: Text('No new requests 😭'),
+            );
+          }
+
           return ListView.builder(
             itemCount: data.receivedFriendRequests.length,
             itemBuilder: (BuildContext context, int index) {
