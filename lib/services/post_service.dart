@@ -74,7 +74,6 @@ class PostService {
         )
         .where('imageUrl', isNotEqualTo: '')
         .snapshots();
-
     return results;
   }
 

@@ -21,6 +21,7 @@ class _SocialFeedScreenState extends State<SocialFeedScreen> {
   Map<String, Stream<QuerySnapshot<Map<String, dynamic>>>> feeds = {};
   late String currentFeed;
 
+  //getcurrentLocation returns the catcherror
   @override
   void initState() {
     super.initState();
