@@ -21,18 +21,10 @@ class _SocialFeedScreenState extends State<SocialFeedScreen> {
   Map<String, Stream<QuerySnapshot<Map<String, dynamic>>>> feeds = {};
   late String currentFeed;
 
-  //getcurrentLocation returns the catcherror
   @override
   void initState() {
     super.initState();
     feeds['Friends'] = posts.getFriendPostsForUser(user);
-    getCurrentLocation().then((latlng) async {
-      setState(() {
-        feeds['Nearby'] = posts.getPostsByLocation(latlng);
-      });
-    }).catchError((_) {
-      logger.w('Unable to get current location, cannot show posts nearby');
-    });
     setState(() {
       // default to the first feed in the list
       currentFeed = feeds.keys.first;
@@ -45,7 +37,12 @@ class _SocialFeedScreenState extends State<SocialFeedScreen> {
     //     posts.getFriendPostsForUser(user);
 
     return SizedBox.expand(
-      child: PostFeed(feeds[currentFeed]!, feeds.keys.toList()),
+      child:
+          PostFeed(feeds[currentFeed]!, feeds.keys.toList(), setFeed: (feed) {
+        setState(() {
+          currentFeed = feed;
+        });
+      }),
     );
   }
 }
