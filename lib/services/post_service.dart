@@ -1,8 +1,6 @@
 import 'dart:typed_data';
-import 'package:stream_transform/stream_transform.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:snapmap/models/post.dart';
 import 'package:snapmap/models/user.dart';
@@ -10,6 +8,7 @@ import 'package:snapmap/services/geo_service.dart';
 import 'package:snapmap/services/photo_service.dart';
 import 'package:snapmap/services/user_service.dart';
 import 'package:snapmap/utils/km_to_latlong.dart';
+import 'package:snapmap/utils/logger.dart';
 
 class PostService {
   /// Singleton for this class
@@ -61,19 +60,15 @@ class PostService {
         .where(
           'latitude',
           isLessThanOrEqualTo: lat + latRange,
-          isGreaterThanOrEqualTo: lat - latRange,
         )
-        .where(
-          'longitude',
-          isLessThanOrEqualTo: long + longRange,
-          isGreaterThanOrEqualTo: long - longRange,
-        )
-        .where(
-          'username',
-          isNotEqualTo: UserService.getInstance().getCurrentUser()!.username,
-        )
-        .where('imageUrl', isNotEqualTo: '')
-        .snapshots();
+        .snapshots()
+        .map((snapshot) {
+      snapshot.docs.where((doc) {
+        double longitude = doc.data()['longitude'];
+        return longitude <= long + longRange && longitude >= long - longRange;
+      }).map((doc) => Post.fromMap(doc.id, doc.data()));
+      return snapshot;
+    });
     return results;
   }
 
@@ -124,20 +119,24 @@ class PostService {
       Map<String, dynamic>? data = (await ref.get()).data();
       if (data == null) return false;
 
+      List<String> likes = List<String>.from(data['likes']);
+
       /// Remove all instances of [user.username] to prevent double counting.
-      (data['likes'] as List<String>)
-          .removeWhere((element) => element == user.username);
+      likes.removeWhere((element) => element == user.username);
 
       /// If liked add 1 instance of [user.username]
       if (liked) {
-        (data['likes'] as List<String>).add(user.username);
+        likes.add(user.username);
       }
+
+      data['likes'] = likes;
 
       /// Update the post data
       ref.set(data);
 
       return true;
     } catch (_) {
+      logger.w('did not update post: $_');
       return false;
     }
   }

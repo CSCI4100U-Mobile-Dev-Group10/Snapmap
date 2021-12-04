@@ -2,7 +2,9 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:snapmap/services/post_service.dart';
+import 'package:snapmap/utils/logger.dart';
 import 'package:snapmap/widgets/atoms/dialog_base.dart';
+import 'package:snapmap/widgets/molecules/error_dialog.dart';
 
 class PostConfirmationDialog extends StatelessWidget {
   const PostConfirmationDialog(this.bytes, {Key? key}) : super(key: key);
@@ -14,7 +16,18 @@ class PostConfirmationDialog extends StatelessWidget {
       title: const Text('Are you sure you want to post this?'),
       content: Image.memory(bytes),
       callback: () async {
-        await PostService.getInstance().uploadPost(bytes);
+        try {
+          await PostService.getInstance().uploadPost(bytes);
+        } catch (_) {
+          logger.w('showing error dialog');
+          await showDialog(
+            context: context,
+            builder: (_) => const ErrorDialog(
+              title: 'Error!',
+              content: 'Location permissions must be enabled to post.',
+            ),
+          );
+        }
       },
     );
   }
