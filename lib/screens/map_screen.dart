@@ -23,9 +23,11 @@ class _MapScreenState extends State<MapScreen> {
 
   Future<void> _currLocation() async {
     LatLng latlng = await getCurrentLocation();
-    setState(() {
-      coords = latlng;
-    });
+    if (this.mounted) {
+      setState(() {
+        coords = latlng;
+      });
+    }
   }
 
   @override
