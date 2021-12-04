@@ -142,8 +142,8 @@ class UserService {
 
       // verify that both users exist
       if (currentData == null || otherData == null) return false;
-      List currentList = currentData['sentFriends'];
-      List otherList = otherData['receivedFriends'];
+      List currentList = currentData['receivedFriends'];
+      List otherList = otherData['sentFriends'];
       // add the users to the respective side of the friend request
       currentList.removeWhere((element) => element == otherUsername);
       otherList.removeWhere((element) => element == _user!.username);
@@ -153,12 +153,8 @@ class UserService {
         otherData['friends'].add(_user!.username);
       }
 
-      print('currentList => ${currentList}');
-
-      currentData['sentFriends'] = currentList;
-      otherData['receivedFriends'] = otherList;
-
-      print('currentData[\'sentFriends\'] => ${currentData['sentFriends']}');
+      currentData['receivedFriends'] = currentList;
+      otherData['sentFriends'] = otherList;
 
       // set both users in parallel
       await Future.wait([
