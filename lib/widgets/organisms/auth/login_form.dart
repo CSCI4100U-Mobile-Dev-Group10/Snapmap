@@ -37,6 +37,7 @@ class _LoginFormState extends State<LoginForm> {
   bool pageFlag = false;
   bool errorExists = false;
   bool redeyeOn = false;
+  bool success = false;
 
   final users = FirebaseFirestore.instance.collection("Users");
 
@@ -261,6 +262,7 @@ class _LoginFormState extends State<LoginForm> {
                             } else {
                               errorExists = false;
                               _btnController.success();
+                              success = true;
                               setState(() {});
                               Timer(const Duration(milliseconds: 150), () {
                                 Navigator.pushReplacementNamed(
@@ -295,6 +297,7 @@ class _LoginFormState extends State<LoginForm> {
                             } else {
                               _btnController.success();
                               errorExists = false;
+                              success = true;
                               setState(() {});
                               Timer(const Duration(milliseconds: 150), () {
                                 Navigator.pushReplacementNamed(
@@ -302,9 +305,11 @@ class _LoginFormState extends State<LoginForm> {
                               });
                             }
                           }
-                          Timer(const Duration(seconds: 1), () {
+                          if (!success) {
+                            Timer(const Duration(seconds: 1), () {
                             _btnController.reset();
                           });
+                          }
                         } else {
                           _btnController.reset();
                         }
