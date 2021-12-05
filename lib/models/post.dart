@@ -1,4 +1,5 @@
 import 'package:latlong2/latlong.dart';
+import 'package:snapmap/utils/logger.dart';
 
 class Post {
   /// The [id] of the post from Firebase
@@ -26,7 +27,7 @@ class Post {
   });
 
   factory Post.fromMap(String id, Map<String, dynamic> data) {
-    print('post => $id');
+    logger.i('post => $id');
     return Post(
       data['username'],
       data['imageUrl'],

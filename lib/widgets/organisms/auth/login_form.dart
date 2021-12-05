@@ -3,11 +3,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
-import 'package:snapmap/models/user.dart';
 import 'package:snapmap/screens/profile_creation_screen.dart';
 import 'package:snapmap/services/email_service.dart';
 import 'package:snapmap/services/auth_service.dart';
-import 'package:snapmap/services/user_service.dart';
 import 'package:snapmap/utils/logger.dart';
 import 'package:snapmap/widgets/themes/dark_green.dart';
 import '../nav_controller.dart';
@@ -232,7 +230,9 @@ class _LoginFormState extends State<LoginForm> {
                             } else {
                               logger.i('user does not exist');
                             }
-                          }).catchError((e) => logger.e(e));
+                          }).catchError((e) {
+                            logger.e(e);
+                          });
                         });
                       },
                     ),
