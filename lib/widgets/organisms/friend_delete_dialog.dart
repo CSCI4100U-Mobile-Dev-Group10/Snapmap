@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:snapmap/models/user.dart';
 import 'package:snapmap/services/user_service.dart';
@@ -12,8 +14,11 @@ class FriendDeleteDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DialogBase(
-      title: const Text('Are you sure you want to remove this friend?'),
-      content: ProfileHeader(user, showEdit: false),
+      title: ProfileHeader(
+        user,
+        showEdit: false,
+      ),
+      content: const Text('Are you sure you want to remove this friend?'),
       callback: () async {
         //what happens
         try {
