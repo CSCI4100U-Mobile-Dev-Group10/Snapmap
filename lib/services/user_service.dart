@@ -97,6 +97,7 @@ class UserService {
   /// the result is whether the operation was successful
   Future<bool> requestFriend(String otherUsername) async {
     try {
+      bool res = true;
       // verify that the user is authenticated
       if (_user?.username == null) return false;
 
@@ -112,9 +113,26 @@ class UserService {
       // verify that both users exist
       if (currentData == null || otherData == null) return false;
 
-      // add the users to the respective side of the friend request
-      (currentData['sentFriends']).add(otherUsername);
-      (otherData['receivedFriends']).add(_user!.username);
+      // check that they aren't already friends
+      // and ensure that the friends relationship is persistent
+      bool curr = currentData['friends'].contains(otherUsername);
+      bool other = otherData['friends'].contains(_user!.username);
+
+      if (curr || other) {
+        if (!curr) {
+          currentData['friends'].add(otherUsername);
+        }
+        if (!other) {
+          otherData['friends'].add(_user!.username);
+        }
+        res = false;
+      }
+
+      if (res) {
+        // add the users to the respective side of the friend request
+        currentData['sentFriends'].add(otherUsername);
+        otherData['receivedFriends'].add(_user!.username);
+      }
 
       // set both users in parallel
       await Future.wait([
@@ -122,7 +140,7 @@ class UserService {
         otherUser.set(otherData),
       ]);
 
-      return true;
+      return res;
     } catch (_) {
       logger.w(_);
       return false;
@@ -152,8 +170,12 @@ class UserService {
       otherList.removeWhere((element) => element == _user!.username);
 
       if (accepted) {
-        currentData['friends'].add(otherUsername);
-        otherData['friends'].add(_user!.username);
+        if (!currentData['friends'].contains(otherUsername)) {
+          currentData['friends'].add(otherUsername);
+        }
+        if (!otherData['friends'].contains(_user!.username)) {
+          otherData['friends'].add(_user!.username);
+        }
       }
 
       currentData['receivedFriends'] = currentList;
