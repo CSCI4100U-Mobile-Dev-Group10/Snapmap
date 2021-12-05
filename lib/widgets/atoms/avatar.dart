@@ -7,7 +7,7 @@ class Avatar extends StatelessWidget {
       : super(key: key);
   final String imageUrl;
   final Uint8List? overrideBytes;
-  final double? radi;
+  final double radi;
   @override
   Widget build(BuildContext context) {
     return CircleAvatar(
@@ -21,8 +21,8 @@ class Avatar extends StatelessWidget {
             if (overrideBytes != null) {
               return Image.memory(
                 overrideBytes!,
-                width: 100,
-                height: 100,
+                width: radi * 1.8,
+                height: radi * 1.8,
               );
             }
 
@@ -30,8 +30,8 @@ class Avatar extends StatelessWidget {
             if (imageUrl.isNotEmpty) {
               return Image.network(
                 imageUrl,
-                width: 100,
-                height: 100,
+                width: radi * 1.8,
+                height: radi * 1.8,
               );
             }
 
@@ -41,11 +41,11 @@ class Avatar extends StatelessWidget {
                 color: Colors.grey[200],
                 borderRadius: BorderRadius.circular(50),
               ),
-              width: 100,
-              height: 100,
+              width: radi * 1.8,
+              height: radi * 1.8,
               child: Icon(
                 Icons.person,
-                size: 60,
+                size: radi + 5,
                 color: Colors.grey[800],
               ),
             );

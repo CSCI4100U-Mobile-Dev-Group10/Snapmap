@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:snapmap/models/user.dart';
 import 'package:snapmap/services/user_service.dart';
-import 'package:snapmap/widgets/molecules/profile_header.dart';
+import 'package:snapmap/widgets/atoms/avatar.dart';
 
 class FriendRequestList extends StatelessWidget {
   FriendRequestList({Key? key}) : super(key: key);
@@ -38,31 +38,46 @@ class FriendRequestList extends StatelessWidget {
                       return Container();
                     }
                     return Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        ProfileHeader(
-                          snapshot.data as User,
-                          showEdit: false,
-                          avatarSize: 40,
+                        Avatar(
+                          snapshot.data.profileUrl,
+                          radi: 25,
                         ),
-                        IconButton(
-                          icon: const Icon(
-                            Icons.close,
-                            color: Colors.redAccent,
-                          ),
-                          onPressed: () async {
-                            await UserService.getInstance().handleFriendRequest(
-                                user.receivedFriendRequests[index], false);
-                          },
+                        Column(
+                          children: <Widget>[
+                            Text(snapshot.data.displayName),
+                            const SizedBox(height: 5),
+                            Text('@' + snapshot.data.username)
+                          ],
                         ),
-                        IconButton(
-                          icon: const Icon(
-                            Icons.check,
-                            color: Color(0xFF0EA47A),
-                          ),
-                          onPressed: () async {
-                            await UserService.getInstance().handleFriendRequest(
-                                user.receivedFriendRequests[index], true);
-                          },
+                        Row(
+                          children: [
+                            IconButton(
+                              icon: const Icon(
+                                Icons.close,
+                                color: Colors.redAccent,
+                              ),
+                              onPressed: () async {
+                                await UserService.getInstance()
+                                    .handleFriendRequest(
+                                        user.receivedFriendRequests[index],
+                                        false);
+                              },
+                            ),
+                            IconButton(
+                              icon: const Icon(
+                                Icons.check,
+                                color: Color(0xFF0EA47A),
+                              ),
+                              onPressed: () async {
+                                await UserService.getInstance()
+                                    .handleFriendRequest(
+                                        user.receivedFriendRequests[index],
+                                        true);
+                              },
+                            ),
+                          ],
                         ),
                       ],
                     );
