@@ -26,7 +26,6 @@ class _ProfileCreationScreenState extends State<ProfileCreationScreen> {
   String displayName = '';
   Uint8List? selectedImageBytes;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final users = FirebaseFirestore.instance.collection("Users");
   User user = UserService.getInstance().getCurrentUser()!;
   bool flag = false;
 
@@ -48,7 +47,7 @@ class _ProfileCreationScreenState extends State<ProfileCreationScreen> {
   // check if display name is already in use for validator
   checkUserDN(String dn) async {
     var result =
-        await users.where('displayName', isEqualTo: dn.toString()).get();
+        await UserService.users.where('displayName', isEqualTo: dn.toString()).get();
     if (result.docs.isEmpty) {
       return false;
     }
@@ -135,7 +134,7 @@ class _ProfileCreationScreenState extends State<ProfileCreationScreen> {
                       }
                       user.displayName = displayName;
                       UserService.getInstance().setUser(user);
-                      await users
+                      await UserService.users
                           .doc(user.username)
                           .set(user.toMap())
                           .then((value) async {

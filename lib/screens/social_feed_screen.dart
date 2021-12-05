@@ -1,10 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:snapmap/models/user.dart';
-import 'package:snapmap/services/geo_service.dart';
 import 'package:snapmap/services/post_service.dart';
 import 'package:snapmap/services/user_service.dart';
-import 'package:snapmap/utils/logger.dart';
 import 'package:snapmap/widgets/organisms/post_feed.dart';
 
 class SocialFeedScreen extends StatefulWidget {
