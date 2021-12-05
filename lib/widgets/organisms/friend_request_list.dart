@@ -26,7 +26,7 @@ class FriendRequestList extends StatelessWidget {
             );
           }
 
-          return ListView.builder(
+          return ListView.separated(
             itemCount: data.receivedFriendRequests.length,
             itemBuilder: (BuildContext context, int index) {
               return FutureBuilder(
@@ -88,6 +88,8 @@ class FriendRequestList extends StatelessWidget {
                 },
               );
             },
+            separatorBuilder: (BuildContext context, int index) =>
+                const Divider(),
           );
         });
   }
