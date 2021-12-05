@@ -7,11 +7,12 @@ import 'profile_display_name.dart';
 
 class ProfileHeader extends StatefulWidget {
   const ProfileHeader(this.user,
-      {this.showEdit = true, this.avatarSize, Key? key})
+      {this.showEdit = true, this.avatarSize, this.textMult, Key? key})
       : super(key: key);
   final User user;
   final bool showEdit;
   final double? avatarSize;
+  final double? textMult;
   @override
   State<ProfileHeader> createState() => _ProfileHeaderState();
 }
@@ -27,10 +28,10 @@ class _ProfileHeaderState extends State<ProfileHeader> {
         // add space between icon header, username / display name and edit button
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Avatar(widget.user.profileUrl),
+          Avatar(widget.user.profileUrl, radi: widget.avatarSize ?? 55),
           DisplayNameWidget(
               username: widget.user.username,
-              displayName: widget.user.displayName),
+              displayName: widget.user.displayName, textMult: widget.textMult,),
           if (widget.showEdit)
             IconButton(
               onPressed: () {

@@ -297,7 +297,7 @@ class _LoginFormState extends State<LoginForm> {
                               errorExists = false;
                               setState(() {});
                               Timer(const Duration(milliseconds: 150), () {
-                                Navigator.pushReplacementNamed(
+                                Navigator.pushNamed(
                                     context, ProfileCreationScreen.routeId);
                               });
                             }
