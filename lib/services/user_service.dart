@@ -68,6 +68,13 @@ class UserService {
   // *
   // * FRIEND OPERATIONS
   // *
+  int? _getNumberofRequests() {
+    try {
+      return _user?.receivedFriendRequests.length;
+    } catch (_) {
+      return -1;
+    }
+  }
 
   Future<User?> getOtherUser(String otherUsername) async {
     try {
