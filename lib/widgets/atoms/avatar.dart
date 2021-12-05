@@ -3,13 +3,15 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 
 class Avatar extends StatelessWidget {
-  const Avatar(this.imageUrl, {this.overrideBytes, Key? key}) : super(key: key);
+  const Avatar(this.imageUrl, {this.overrideBytes, this.radi = 55, Key? key})
+      : super(key: key);
   final String imageUrl;
   final Uint8List? overrideBytes;
+  final double? radi;
   @override
   Widget build(BuildContext context) {
     return CircleAvatar(
-      radius: 55,
+      radius: radi,
       backgroundColor: const Color(0xFF12D39D),
       child: ClipOval(
         child: Builder(
