@@ -24,33 +24,39 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Column(
+      child: ListView(
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
         children: [
-          ProfileHeader(user),
-          // create TabView to alternate between your QR code and your friend list
-          DefaultTabController(
-              length: 3,
-              child: Column(
-                children: [
-                  const TabBar(
-                    tabs: [
-                      ProfileTabs(icon: Icons.people),
-                      ProfileTabs(icon: Icons.qr_code),
-                      ProfileTabs(icon: Icons.person_add_alt_1)
-                    ],
-                    indicatorColor: Color(0xFF12D39D),
-                  ),
-                  SizedBox(
-                    height: 400,
-                    child: TabBarView(children: [
-                      FriendsList(user),
-                      FriendCode(user),
-                      FriendRequestList(),
-                    ]),
-                  ),
-                ],
-              ))
-        ],
+          Column(
+          children: [
+            ProfileHeader(user),
+            // create TabView to alternate between your QR code and your friend list
+            DefaultTabController(
+                length: 3,
+                child: Column(
+                  children: [
+                    const TabBar(
+                      tabs: [
+                        ProfileTabs(icon: Icons.people),
+                        ProfileTabs(icon: Icons.qr_code),
+                        ProfileTabs(icon: Icons.person_add_alt_1)
+                      ],
+                      indicatorColor: Color(0xFF12D39D),
+                    ),
+                    SizedBox(
+                      height: 400,
+                      child: TabBarView(children: [
+                        FriendsList(user),
+                        FriendCode(user),
+                        FriendRequestList(),
+                      ]),
+                    ),
+                  ],
+                ))
+          ],
+        ),
+        ]
       ),
     );
   }
