@@ -12,8 +12,11 @@ class FriendDeleteDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DialogBase(
-      title: const Text('Are you sure you want to remove this friend?'),
-      content: ProfileHeader(user, showEdit: false),
+      title: ProfileHeader(
+        user,
+        showEdit: false,
+      ),
+      content: const Text('Are you sure you want to remove this friend?'),
       callback: () async {
         //what happens
         try {

@@ -47,7 +47,9 @@ class _FriendsListState extends State<FriendsList> {
                     if (snapshot.data == null) {
                       return Container();
                     }
-                    return FriendListItem(snapshot.data);
+                    return Container(
+                        padding: const EdgeInsets.all(8),
+                        child: FriendListItem(snapshot.data));
                   }
                   return const Center(
                     child: CircularProgressIndicator(),
@@ -56,7 +58,10 @@ class _FriendsListState extends State<FriendsList> {
               );
             },
             separatorBuilder: (BuildContext context, int index) =>
-                const Divider(),
+                const Divider(
+              color: Color(0xFF0EA47A),
+              thickness: 0.5,
+            ),
           );
         });
   }
