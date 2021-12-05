@@ -27,7 +27,6 @@ class _ProfileHeaderState extends State<ProfileHeader> {
         // add space between icon header, username / display name and edit button
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          //TODO override avatar size
           Avatar(widget.user.profileUrl),
           DisplayNameWidget(
               username: widget.user.username,

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:snapmap/widgets/atoms/dialog_base.dart';
 
 class ErrorDialog extends StatelessWidget {
   const ErrorDialog({

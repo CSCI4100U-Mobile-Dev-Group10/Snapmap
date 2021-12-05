@@ -31,6 +31,11 @@ class QrResult {
           _setNone();
       }
     }
+
+    if (username == UserService.getInstance().getCurrentUser()!.username) {
+      // Don't do anything if you scan your own code
+      operation = QrOperation.none;
+    }
   }
 
   void _setNone() {
