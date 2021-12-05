@@ -11,6 +11,7 @@ class UserService {
   static final UserService _singleton = UserService._();
   factory UserService.getInstance() => _singleton;
   static final users = FirebaseFirestore.instance.collection("Users");
+  final newFriends = FriendRequests();
 
   // *
   // * CURRENT USER OPERATIONS - (currently authenticated user)
@@ -45,7 +46,7 @@ class UserService {
         doc(username).snapshots();
     _userStream = stream.listen((event) {
       _refresh(event);
-      FriendRequests().showNotification();
+      newFriends.showNotification();
     });
   }
 
