@@ -189,9 +189,9 @@ class UserService {
       if (currentData == null || otherData == null) return false;
 
       // remove the friends from both users
-      (currentData['friends'] as List<String>)
+      (currentData['friends'])
           .removeWhere((element) => element == otherUsername);
-      (otherData['friends'] as List<String>)
+      (otherData['friends'])
           .removeWhere((element) => element == _user!.username);
 
       // set both users in parallel
