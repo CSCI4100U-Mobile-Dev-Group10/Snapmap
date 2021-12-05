@@ -3,13 +3,15 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 
 class Avatar extends StatelessWidget {
-  const Avatar(this.imageUrl, {this.overrideBytes, Key? key}) : super(key: key);
+  const Avatar(this.imageUrl, {this.overrideBytes, this.radi = 55, Key? key})
+      : super(key: key);
   final String imageUrl;
   final Uint8List? overrideBytes;
+  final double radi;
   @override
   Widget build(BuildContext context) {
     return CircleAvatar(
-      radius: 55,
+      radius: radi,
       backgroundColor: const Color(0xFF12D39D),
       child: ClipOval(
         child: Builder(
@@ -19,8 +21,8 @@ class Avatar extends StatelessWidget {
             if (overrideBytes != null) {
               return Image.memory(
                 overrideBytes!,
-                width: 100,
-                height: 100,
+                width: radi * 1.8,
+                height: radi * 1.8,
               );
             }
 
@@ -28,8 +30,8 @@ class Avatar extends StatelessWidget {
             if (imageUrl.isNotEmpty) {
               return Image.network(
                 imageUrl,
-                width: 100,
-                height: 100,
+                width: radi * 1.8,
+                height: radi * 1.8,
               );
             }
 
@@ -39,11 +41,11 @@ class Avatar extends StatelessWidget {
                 color: Colors.grey[200],
                 borderRadius: BorderRadius.circular(50),
               ),
-              width: 100,
-              height: 100,
+              width: radi * 1.8,
+              height: radi * 1.8,
               child: Icon(
                 Icons.person,
-                size: 60,
+                size: radi + 5,
                 color: Colors.grey[800],
               ),
             );
