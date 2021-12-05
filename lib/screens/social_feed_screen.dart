@@ -22,6 +22,7 @@ class _SocialFeedScreenState extends State<SocialFeedScreen> {
   @override
   void initState() {
     super.initState();
+
     feeds['Friends'] = posts.getFriendPostsForUser(user);
     setState(() {
       // default to the first feed in the list
@@ -38,6 +39,7 @@ class _SocialFeedScreenState extends State<SocialFeedScreen> {
       child:
           PostFeed(feeds[currentFeed]!, feeds.keys.toList(), setFeed: (feed) {
         setState(() {
+          // FriendRequests(context).showNotification();
           currentFeed = feed;
         });
       }),

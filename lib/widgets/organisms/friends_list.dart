@@ -16,26 +16,8 @@ class _FriendsListState extends State<FriendsList> {
   List<FriendListItem> friendList = <FriendListItem>[];
 
   User user = UserService.getInstance().getCurrentUser()!;
-  @override
-  void initState() {
-    super.initState();
-    List<FriendListItem> friendList = <FriendListItem>[
-      FriendListItem(widget.user),
-      FriendListItem(widget.user)
-    ];
-  }
 
   @override
-  /*Widget build(BuildContext context) {
-    return ListView.separated(
-      padding: const EdgeInsets.all(8),
-      itemCount: friendList.length,
-      itemBuilder: (BuildContext context, int index) {
-        return friendList[index];
-      },
-      separatorBuilder: (BuildContext context, int index) => const Divider(),
-    );
-  }*/
   Widget build(BuildContext context) {
     return StreamBuilder(
         stream: UserService.getInstance().currentUserStream(),
@@ -65,8 +47,9 @@ class _FriendsListState extends State<FriendsList> {
                     if (snapshot.data == null) {
                       return Container();
                     }
-                    //return stuff here
-                    return FriendListItem(snapshot.data);
+                    return Container(
+                        padding: const EdgeInsets.all(8),
+                        child: FriendListItem(snapshot.data));
                   }
                   return const Center(
                     child: CircularProgressIndicator(),
@@ -75,7 +58,10 @@ class _FriendsListState extends State<FriendsList> {
               );
             },
             separatorBuilder: (BuildContext context, int index) =>
-                const Divider(),
+                const Divider(
+              color: Color(0xFF0EA47A),
+              thickness: 0.5,
+            ),
           );
         });
   }

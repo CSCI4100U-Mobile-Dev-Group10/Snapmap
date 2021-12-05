@@ -25,51 +25,50 @@ class _FriendRequestSenderState extends State<FriendRequestSender> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(5),
+    return SizedBox(
+      height: 88,
       child: Form(
         key: _formKey,
         child: Stack(
+          fit: StackFit.loose,
           children: [
-            Container(
-              height: 100,
-            ),
             Positioned(
               left: (MediaQuery.of(context).size.width) * 0.01,
               top: 5,
               width: (MediaQuery.of(context).size.width) * 0.78,
               child: TextFormField(
-                controller: _controller,
-                decoration: const InputDecoration(
-                  labelText: 'Send a friend request',
-                  border: OutlineInputBorder(),
-                  hintText: 'Enter username (e.g Andrew)',
+                  controller: _controller,
+                  decoration: const InputDecoration(
+                    labelText: 'Send a friend request',
+                    // border: OutlineInputBorder(),
+                    hintText: 'Enter username (e.g Andrew)',
+                  ),
+                  onChanged: (text) async {
+                    await checkifUserExists(text).then((value) {
+                      flag = value;
+                    });
+                  },
+                  validator: (value) {
+                    var _user = UserService.getInstance().getCurrentUser()!;
+                    if (value == null || value.isEmpty) {
+                      return 'Must enter username';
+                    } else if (!flag) {
+                      return 'User does not exist';
+                    } else if (_user.friends.contains(value.toString())) {
+                      return 'You are already friends with ${value.toString()}';
+                    } else if (_user.sentFriendRequests.contains(value.toString())) {
+                      return 'You have already sent a request to ${value.toString()}';
+                    } else if (_user.receivedFriendRequests.contains(value.toString())) {
+                      return 'You have already recieved a request from ${value.toString()}';
+                    } else if (_user.username == value.toString()) {
+                      return 'You cannot request yourself silly';
+                    }
+                    return null;
+                  },
+                  onSaved: (value) {
+                    usernameToSend = value.toString();
+                  },
                 ),
-                onChanged: (text) async {
-                  await checkifUserExists(text).then((value) {
-                    flag = value;
-                  });
-                },
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Must enter username';
-                  } else if (!flag) {
-                    return 'User does not exist';
-                  } else if (UserService.getInstance().getCurrentUser()!.friends.contains(value.toString())) {
-                    return 'You are already friends with ${value.toString()}';
-                  } else if (UserService.getInstance().getCurrentUser()!.sentFriendRequests.contains(value.toString())) {
-                    return 'You have already sent a request to ${value.toString()}';
-                  } else if (UserService.getInstance().getCurrentUser()!.receivedFriendRequests.contains(value.toString())) {
-                    return 'You have already recieved a request from ${value.toString()}';
-                  } else if (UserService.getInstance().getCurrentUser()!.username == value.toString()) {
-                    return 'You cannot request yourself silly';
-                  }
-                  return null;
-                },
-                onSaved: (value) {
-                  usernameToSend = value.toString();
-                },
-              ),
             ),
             Positioned(
               left: (MediaQuery.of(context).size.width) * 0.81,

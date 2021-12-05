@@ -17,23 +17,22 @@ class FriendRequestList extends StatelessWidget {
         StreamBuilder(
           stream: UserService.getInstance().currentUserStream(),
           builder: (context, snap) {
-            if (!snap.hasData) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-            DocumentSnapshot<Map<String, dynamic>> doc =
-                (snap.data! as DocumentSnapshot<Map<String, dynamic>>);
-            User data = User.fromMap(doc.id, doc.data()!);
-            if (data.receivedFriendRequests.isEmpty) {
-              return const Center(
-                child: Text('No new requests 😭'),
-              );
-            }
+          if (!snap.hasData) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          DocumentSnapshot<Map<String, dynamic>> doc =
+              (snap.data! as DocumentSnapshot<Map<String, dynamic>>);
+          User data = User.fromMap(doc.id, doc.data()!);
+          if (data.receivedFriendRequests.isEmpty) {
+            return const Center(
+              child: Text('No new requests 😭'),
+            );
+          }
     
-            return ListView.builder(
-              scrollDirection: Axis.vertical,
-              shrinkWrap: true,
+          return Expanded(
+            child: ListView.separated(
               itemCount: data.receivedFriendRequests.length,
               itemBuilder: (BuildContext context, int index) {
                 return FutureBuilder(
@@ -44,49 +43,52 @@ class FriendRequestList extends StatelessWidget {
                       if (snapshot.data == null) {
                         return Container();
                       }
-                      return Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Avatar(
-                            snapshot.data.profileUrl,
-                            radi: 25,
-                          ),
-                          Column(
-                            children: <Widget>[
-                              Text(snapshot.data.displayName),
-                              const SizedBox(height: 5),
-                              Text('@' + snapshot.data.username)
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              IconButton(
-                                icon: const Icon(
-                                  Icons.close,
-                                  color: Colors.redAccent,
+                      return Container(
+                        padding: const EdgeInsets.all(8),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Avatar(
+                              snapshot.data.profileUrl,
+                              radi: 25,
+                            ),
+                            Column(
+                              children: <Widget>[
+                                Text(snapshot.data.displayName),
+                                const SizedBox(height: 5),
+                                Text('@' + snapshot.data.username)
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                IconButton(
+                                  icon: const Icon(
+                                    Icons.close,
+                                    color: Colors.redAccent,
+                                  ),
+                                  onPressed: () async {
+                                    await UserService.getInstance()
+                                        .handleFriendRequest(
+                                            user.receivedFriendRequests[index],
+                                            false);
+                                  },
                                 ),
-                                onPressed: () async {
-                                  await UserService.getInstance()
-                                      .handleFriendRequest(
-                                          user.receivedFriendRequests[index],
-                                          false);
-                                },
-                              ),
-                              IconButton(
-                                icon: const Icon(
-                                  Icons.check,
-                                  color: Color(0xFF0EA47A),
+                                IconButton(
+                                  icon: const Icon(
+                                    Icons.check,
+                                    color: Color(0xFF0EA47A),
+                                  ),
+                                  onPressed: () async {
+                                    await UserService.getInstance()
+                                        .handleFriendRequest(
+                                            user.receivedFriendRequests[index],
+                                            true);
+                                  },
                                 ),
-                                onPressed: () async {
-                                  await UserService.getInstance()
-                                      .handleFriendRequest(
-                                          user.receivedFriendRequests[index],
-                                          true);
-                                },
-                              ),
-                            ],
-                          ),
-                        ],
+                              ],
+                            ),
+                          ],
+                        ),
                       );
                     }
                     return const Center(
@@ -95,8 +97,14 @@ class FriendRequestList extends StatelessWidget {
                   },
                 );
               },
-            );
-          }),
+              separatorBuilder: (BuildContext context, int index) =>
+                  const Divider(
+                color: Color(0xFF0EA47A),
+                thickness: 0.5,
+              ),
+            ),
+          );
+        }),
       ]
     );
   }
