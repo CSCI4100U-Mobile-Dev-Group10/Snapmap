@@ -6,6 +6,8 @@ import 'package:snapmap/services/post_service.dart';
 import 'package:snapmap/services/user_service.dart';
 import 'package:snapmap/utils/logger.dart';
 import 'package:snapmap/widgets/organisms/post_feed.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:snapmap/services/notification_services.dart';
 
 class SocialFeedScreen extends StatefulWidget {
   const SocialFeedScreen({Key? key}) : super(key: key);
@@ -24,6 +26,7 @@ class _SocialFeedScreenState extends State<SocialFeedScreen> {
   @override
   void initState() {
     super.initState();
+
     feeds['Friends'] = posts.getFriendPostsForUser(user);
     setState(() {
       // default to the first feed in the list
@@ -40,6 +43,7 @@ class _SocialFeedScreenState extends State<SocialFeedScreen> {
       child:
           PostFeed(feeds[currentFeed]!, feeds.keys.toList(), setFeed: (feed) {
         setState(() {
+          // FriendRequests(context).showNotification();
           currentFeed = feed;
         });
       }),

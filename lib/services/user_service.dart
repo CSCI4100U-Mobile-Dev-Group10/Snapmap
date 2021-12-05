@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:snapmap/models/user.dart';
+import 'package:snapmap/services/notification_services.dart';
 import 'package:snapmap/utils/logger.dart';
 
 class UserService {
@@ -10,6 +11,7 @@ class UserService {
   static final UserService _singleton = UserService._();
   factory UserService.getInstance() => _singleton;
   static final users = FirebaseFirestore.instance.collection("Users");
+  final newFriends = FriendRequests();
 
   // *
   // * CURRENT USER OPERATIONS - (currently authenticated user)
@@ -44,7 +46,7 @@ class UserService {
         doc(username).snapshots();
     _userStream = stream.listen((event) {
       _refresh(event);
-      //TODO handle new friend requests here and create notification for it
+      newFriends.showNotification();
     });
   }
 

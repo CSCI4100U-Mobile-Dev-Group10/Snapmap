@@ -61,11 +61,6 @@ class _NavControllerState extends State<NavController> {
               icon: Icon(Icons.person),
               label: '',
             ),
-            //test Section to verfy map is working
-            // BottomNavigationBarItem(
-            //   icon: Icon(Icons.map),
-            //   label: '',
-            // ),
           ],
         ),
       ),
