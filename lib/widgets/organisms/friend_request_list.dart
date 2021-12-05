@@ -89,7 +89,10 @@ class FriendRequestList extends StatelessWidget {
               );
             },
             separatorBuilder: (BuildContext context, int index) =>
-                const Divider(),
+                const Divider(
+              color: Color(0xFF0EA47A),
+              thickness: 0.5,
+            ),
           );
         });
   }
