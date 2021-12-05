@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:snapmap/models/user.dart';
 import 'package:snapmap/services/user_service.dart';
