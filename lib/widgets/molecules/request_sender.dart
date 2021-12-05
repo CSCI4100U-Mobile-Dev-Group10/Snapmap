@@ -11,7 +11,7 @@ class FriendRequestSender extends StatefulWidget {
 
 class _FriendRequestSenderState extends State<FriendRequestSender> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final TextEditingController _controller = new TextEditingController();
+  final TextEditingController _controller = TextEditingController();
   String usernameToSend = '';
   bool flag = false;
 
