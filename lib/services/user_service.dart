@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:snapmap/models/user.dart';
+import 'package:snapmap/services/notification_services.dart';
 import 'package:snapmap/utils/logger.dart';
 
 class UserService {
@@ -44,7 +45,7 @@ class UserService {
         doc(username).snapshots();
     _userStream = stream.listen((event) {
       _refresh(event);
-      //TODO handle new friend requests here and create notification for it
+      FriendRequests().showNotification();
     });
   }
 
@@ -68,13 +69,6 @@ class UserService {
   // *
   // * FRIEND OPERATIONS
   // *
-  int? _getNumberofRequests() {
-    try {
-      return _user?.receivedFriendRequests.length;
-    } catch (_) {
-      return -1;
-    }
-  }
 
   Future<User?> getOtherUser(String otherUsername) async {
     try {

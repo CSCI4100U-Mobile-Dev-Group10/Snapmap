@@ -4,10 +4,9 @@ import 'package:snapmap/models/user.dart';
 import 'user_service.dart';
 
 class FriendRequests {
-  late BuildContext context;
   late FlutterLocalNotificationsPlugin notification;
 
-  FriendRequests(this.context) {
+  FriendRequests() {
     initNotification();
   }
 

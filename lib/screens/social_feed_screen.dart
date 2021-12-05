@@ -38,7 +38,7 @@ class _SocialFeedScreenState extends State<SocialFeedScreen> {
   Widget build(BuildContext context) {
     // Stream<QuerySnapshot<Map<String, dynamic>>> locations =
     //     posts.getFriendPostsForUser(user);
-    FriendRequests(context).showNotification();
+
     return SizedBox.expand(
       child:
           PostFeed(feeds[currentFeed]!, feeds.keys.toList(), setFeed: (feed) {
