@@ -17,7 +17,12 @@ class FriendRequestDialog extends StatelessWidget {
           if (snapshot.hasData) {
             User? user = snapshot.data;
             if (user == null) return Container();
-            return ProfileHeader(user, showEdit: false);
+            return ProfileHeader(
+              user,
+              showEdit: false,
+              textMult: 4,
+              avatarSize: 45,
+            );
           }
           if (snapshot.hasError) return Container();
           return const LinearProgressIndicator();

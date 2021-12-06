@@ -15,6 +15,8 @@ class FriendDeleteDialog extends StatelessWidget {
       title: ProfileHeader(
         user,
         showEdit: false,
+        textMult: 4,
+        avatarSize: 45,
       ),
       content: const Text('Are you sure you want to remove this friend?'),
       callback: () async {

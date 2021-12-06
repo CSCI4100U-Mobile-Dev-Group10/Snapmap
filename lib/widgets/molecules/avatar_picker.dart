@@ -22,6 +22,7 @@ class _AvatarPickerState extends State<AvatarPicker> {
       onTap: imgFromGallery,
       child: Avatar(
         widget.user.profileUrl,
+        radi: 55,
         overrideBytes: selectedImageBytes,
       ),
     );

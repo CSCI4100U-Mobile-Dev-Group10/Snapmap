@@ -3,7 +3,6 @@
 
 import 'dart:typed_data';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:snapmap/models/user.dart';
 import 'package:snapmap/services/photo_service.dart';
