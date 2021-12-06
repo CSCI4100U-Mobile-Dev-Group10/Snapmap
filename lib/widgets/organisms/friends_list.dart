@@ -13,7 +13,6 @@ class FriendsList extends StatefulWidget {
 }
 
 class _FriendsListState extends State<FriendsList> {
-  List<FriendListItem> friendList = <FriendListItem>[];
 
   User user = UserService.getInstance().getCurrentUser()!;
 
